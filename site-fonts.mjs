@@ -10,17 +10,18 @@ import { fontProviders } from "astro/config";
 
 export const siteFonts = [
   {
-    name: "Inter",
+    name: "Manrope",
     cssVariable: "--font-body",
     provider: fontProviders.google(),
-    weights: [400, 600, 700],
+    weights: [300, 400, 500, 600, 700],
     styles: ["normal"],
   },
   {
-    name: "Raleway",
+    name: "Fraunces",
     cssVariable: "--font-headings",
     provider: fontProviders.google(),
-    weights: [400, 600, 700],
-    styles: ["normal"],
+    weights: [300, 400, 500, 600, 700],
+    styles: ["normal", "italic"],
+    featureSettings: "'opsz' 144, 'SOFT' 50",
   },
 ];

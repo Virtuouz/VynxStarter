@@ -1,6 +1,7 @@
 ---
 import { readFileSync } from "fs";
 import CollectionItem from "@layouts/CollectionItem.astro";
+import ListingItem from "@layouts/ListingItem.astro";
 import { getCollection, render } from "astro:content";
 
 interface CollectionDef {
@@ -54,15 +55,24 @@ interface Props {
 
 const { item, collectionDef } = Astro.props;
 const { Content } = await render(item);
+const isListing = collectionDef.slug === "listings";
 ---
 
-<CollectionItem
-  title={item.data.title || ""}
-  description={item.data.description}
-  image={item.data.image}
-  collectionName={collectionDef.name}
-  collectionSlug={collectionDef.slug}
-  singularLabel={collectionDef.singular_label}
->
-  <Content />
-</CollectionItem>
+{
+  isListing ? (
+    <ListingItem item={item}>
+      <Content />
+    </ListingItem>
+  ) : (
+    <CollectionItem
+      title={item.data.title || ""}
+      description={item.data.description}
+      image={item.data.image}
+      collectionName={collectionDef.name}
+      collectionSlug={collectionDef.slug}
+      singularLabel={collectionDef.singular_label}
+    >
+      <Content />
+    </CollectionItem>
+  )
+}

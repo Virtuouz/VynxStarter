@@ -1,0 +1,245 @@
+---
+const {
+  slug,
+  title,
+  image,
+  imageAlt,
+  address,
+  city,
+  state,
+  price,
+  beds,
+  baths,
+  sqft,
+  status,
+  propertyType,
+} = Astro.props;
+
+const href = `/listings/${slug}/`;
+const formattedPrice = typeof price === "number" ? `$${price.toLocaleString("en-US")}` : price;
+const formattedSqft = typeof sqft === "number" ? sqft.toLocaleString("en-US") : sqft;
+const statusClass = status ? `status-${status.toLowerCase().replace(/\s+/g, "-")}` : "";
+---
+
+<article class="property-card">
+  <a
+    class="property-card-link"
+    href={href}
+    aria-label={`View ${title || address}`}
+  >
+    <div class="property-card-media">
+      <img
+        src={image}
+        alt={imageAlt || title || address}
+        loading="lazy"
+        decoding="async"
+      />
+      {
+        status && (
+          <span class:list={["property-card-status", statusClass]}>{status}</span>
+        )
+      }
+      {
+        propertyType && (
+          <span class="property-card-type">{propertyType}</span>
+        )
+      }
+    </div>
+
+    <div class="property-card-body">
+      <div class="property-card-location">
+        <span class="property-card-city">{city}{state ? `, ${state}` : ""}</span>
+      </div>
+      <h3 class="property-card-title">{title || address}</h3>
+      <p class="property-card-address">{address}</p>
+
+      <div class="property-card-meta">
+        <span class="property-card-price">{formattedPrice}</span>
+      </div>
+
+      <dl class="property-card-specs">
+        <div class="spec">
+          <dt>Beds</dt>
+          <dd>{beds}</dd>
+        </div>
+        <div class="spec">
+          <dt>Baths</dt>
+          <dd>{baths}</dd>
+        </div>
+        <div class="spec">
+          <dt>Sq Ft</dt>
+          <dd>{formattedSqft}</dd>
+        </div>
+      </dl>
+    </div>
+  </a>
+</article>
+
+<style>
+  @layer components {
+    .property-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-card);
+      display: block;
+      overflow: hidden;
+      position: relative;
+      transition:
+        transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+        box-shadow 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+        border-color 0.3s ease;
+    }
+
+    .property-card:hover {
+      border-color: var(--color-border-strong);
+      box-shadow:
+        0 1px 2px rgba(28, 25, 21, 0.04),
+        0 24px 48px -16px rgba(28, 25, 21, 0.18);
+      transform: translateY(-4px);
+    }
+
+    .property-card-link {
+      color: inherit;
+      display: block;
+      text-decoration: none;
+    }
+
+    .property-card-media {
+      aspect-ratio: 4 / 3;
+      background: var(--color-bg-muted);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .property-card-media img {
+      display: block;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+      width: 100%;
+    }
+
+    .property-card:hover .property-card-media img {
+      transform: scale(1.04);
+    }
+
+    .property-card-status,
+    .property-card-type {
+      backdrop-filter: blur(6px);
+      background: rgba(250, 247, 241, 0.9);
+      border: 1px solid rgba(28, 25, 21, 0.08);
+      color: var(--color-text-strong);
+      font-family: var(--font-body);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 0.4rem 0.7rem;
+      position: absolute;
+      text-transform: uppercase;
+    }
+
+    .property-card-status {
+      left: 1rem;
+      top: 1rem;
+    }
+
+    .property-card-status.status-pending {
+      background: rgba(245, 231, 211, 0.95);
+      color: #7a4e15;
+    }
+
+    .property-card-status.status-sold {
+      background: rgba(44, 59, 46, 0.92);
+      border-color: transparent;
+      color: var(--color-text-on-brand);
+    }
+
+    .property-card-status.status-coming-soon {
+      background: rgba(138, 90, 59, 0.94);
+      border-color: transparent;
+      color: var(--color-text-on-brand);
+    }
+
+    .property-card-type {
+      right: 1rem;
+      top: 1rem;
+    }
+
+    .property-card-body {
+      padding: 1.5rem 1.5rem 1.75rem;
+    }
+
+    .property-card-location {
+      color: var(--color-text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    .property-card-title {
+      color: var(--color-text-strong);
+      font-family: var(--font-headings);
+      font-size: 1.4rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      margin: 0 0 0.35rem;
+    }
+
+    .property-card-address {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+      margin: 0 0 1.25rem;
+    }
+
+    .property-card-meta {
+      align-items: baseline;
+      border-top: 1px solid var(--color-border-subtle);
+      display: flex;
+      justify-content: space-between;
+      padding-top: 1.25rem;
+    }
+
+    .property-card-price {
+      color: var(--color-text-strong);
+      font-family: var(--font-headings);
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: -0.015em;
+    }
+
+    .property-card-specs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin: 1.25rem 0 0;
+    }
+
+    .property-card-specs .spec {
+      text-align: left;
+    }
+
+    .property-card-specs .spec + .spec {
+      border-left: 1px solid var(--color-border-subtle);
+      padding-left: 1rem;
+    }
+
+    .property-card-specs dt {
+      color: var(--color-text-muted);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      margin-bottom: 0.2rem;
+      text-transform: uppercase;
+    }
+
+    .property-card-specs dd {
+      color: var(--color-text-strong);
+      font-family: var(--font-headings);
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin: 0;
+    }
+  }
+</style>

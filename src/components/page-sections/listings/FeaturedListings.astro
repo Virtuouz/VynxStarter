@@ -1,0 +1,175 @@
+---
+import PropertyCard from "./PropertyCard.astro";
+import { getCollection } from "astro:content";
+
+const {
+  eyebrow = "The Portfolio",
+  heading = "Currently on offer",
+  subtext = "",
+  limit = 3,
+  backgroundColor = "base",
+} = Astro.props;
+
+let listings: any[] = [];
+try {
+  const all = await getCollection("listings");
+  listings = all
+    .map((item: any) => {
+      const slug = item.id?.replace(/\.md$/, "") || item.slug;
+      return { ...item.data, slug };
+    })
+    .sort((a: any, b: any) => {
+      const fa = a.featured ? 1 : 0;
+      const fb = b.featured ? 1 : 0;
+      if (fa !== fb) return fb - fa;
+      return (b.price || 0) - (a.price || 0);
+    })
+    .slice(0, limit);
+} catch {
+  listings = [];
+}
+
+const bgClass = `bg-${backgroundColor}`;
+---
+
+<section class:list={["featured-listings", bgClass]}>
+  <div class="featured-inner">
+    <header class="featured-header">
+      <div>
+        <span class="featured-eyebrow">{eyebrow}</span>
+        <h2 class="featured-heading">{heading}</h2>
+        {subtext && <p class="featured-subtext">{subtext}</p>}
+      </div>
+      <a
+        class="featured-link"
+        href="/listings/"
+      >
+        View all homes
+        <span aria-hidden="true">→</span>
+      </a>
+    </header>
+
+    <div class="featured-grid">
+      {
+        listings.map((l: any) => (
+          <PropertyCard
+            slug={l.slug}
+            title={l.title}
+            image={l.image}
+            imageAlt={l.image_alt}
+            address={l.address}
+            city={l.city}
+            state={l.state}
+            price={l.price}
+            beds={l.beds}
+            baths={l.baths}
+            sqft={l.sqft}
+            status={l.status}
+            propertyType={l.property_type}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  @layer page-sections {
+    .featured-listings {
+      padding: clamp(4rem, 7vw, 6rem) var(--spacing-lg);
+    }
+
+    .featured-listings.bg-base {
+      background: var(--color-bg);
+    }
+
+    .featured-listings.bg-surface {
+      background: var(--color-bg-surface);
+    }
+
+    .featured-inner {
+      margin-inline: auto;
+      max-width: 80rem;
+    }
+
+    .featured-header {
+      align-items: end;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+    }
+
+    .featured-eyebrow {
+      color: var(--color-text-muted);
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+
+    .featured-eyebrow::before {
+      background: var(--color-brand);
+      content: "";
+      display: inline-block;
+      height: 1px;
+      margin-right: 0.75rem;
+      vertical-align: middle;
+      width: 2rem;
+    }
+
+    .featured-heading {
+      color: var(--color-text-strong);
+      font-family: var(--font-headings);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin: 0;
+      max-width: 18ch;
+    }
+
+    .featured-subtext {
+      color: var(--color-text-muted);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 1rem 0 0;
+      max-width: 44ch;
+    }
+
+    .featured-link {
+      color: var(--color-text-strong);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.25s ease;
+    }
+
+    .featured-link span {
+      display: inline-block;
+      margin-left: 0.4rem;
+      transition: transform 0.25s ease;
+    }
+
+    .featured-link:hover {
+      color: var(--color-link);
+    }
+
+    .featured-link:hover span {
+      transform: translateX(4px);
+    }
+
+    .featured-grid {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+  }
+</style>

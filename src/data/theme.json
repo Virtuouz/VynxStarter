@@ -1,44 +1,44 @@
 {
   "colors": {
     "primary": {
-      "brand": "#000000",
-      "brand_muted": "#404040",
-      "brand_subtle": "#6a6a6a",
-      "brand_on": "#ffffff",
-      "text": "#2a2a2a",
-      "text_strong": "#000000",
-      "text_muted": "#555555",
-      "text_on_muted": "#000000",
-      "text_on_brand": "#ffffff",
-      "text_inverse": "#ffffff",
-      "link": "blue",
-      "link_hover": "darkblue",
-      "bg": "#ffffff",
-      "bg_surface": "#eaeaea",
-      "bg_muted": "#d4d4d4",
-      "bg_accent": "#d5fdff",
-      "bg_highlight": "#fff9d6",
-      "bg_brand": "#000000",
-      "bg_brand_muted": "#404040",
-      "bg_inverse": "#000000",
-      "border": "#aaaaaa",
-      "border_inputs": "#6a6a6a",
-      "border_strong": "#2a2a2a",
-      "border_subtle": "#eaeaea",
-      "state_hover": "rgba(0, 0, 0, 0.04)",
-      "state_active": "rgba(0, 0, 0, 0.08)",
-      "overlay": "rgba(0, 0, 0, 0.5)",
-      "focus_ring": "rgba(0, 87, 255, 0.4)",
-      "error": "#f00"
+      "brand": "#2C3B2E",
+      "brand_muted": "#4A5C48",
+      "brand_subtle": "#7C8E78",
+      "brand_on": "#F5F1EA",
+      "text": "#1C1915",
+      "text_strong": "#0F0D0A",
+      "text_muted": "#6B6456",
+      "text_on_muted": "#1C1915",
+      "text_on_brand": "#F5F1EA",
+      "text_inverse": "#F5F1EA",
+      "link": "#8A5A3B",
+      "link_hover": "#6E4529",
+      "bg": "#FAF7F1",
+      "bg_surface": "#F0EADD",
+      "bg_muted": "#E5DDC9",
+      "bg_accent": "#D9D0B8",
+      "bg_highlight": "#F5E7D3",
+      "bg_brand": "#2C3B2E",
+      "bg_brand_muted": "#4A5C48",
+      "bg_inverse": "#1C1915",
+      "border": "#C9BFA8",
+      "border_inputs": "#9C9178",
+      "border_strong": "#6B6456",
+      "border_subtle": "#E5DDC9",
+      "state_hover": "rgba(28, 25, 21, 0.04)",
+      "state_active": "rgba(28, 25, 21, 0.08)",
+      "overlay": "rgba(28, 25, 21, 0.6)",
+      "focus_ring": "rgba(138, 90, 59, 0.45)",
+      "error": "#A7391E"
     }
   },
   "typography": {
-    "heading_font": "Raleway",
-    "content_font": "Inter"
+    "heading_font": "Fraunces",
+    "content_font": "Manrope"
   },
   "rounding": {
-    "button": "0.375rem",
-    "image": "0.5rem",
-    "card": "0.75rem"
+    "button": "0.125rem",
+    "image": "0.25rem",
+    "card": "0.375rem"
   }
 }

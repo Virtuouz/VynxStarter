@@ -1,3 +1,36 @@
 {
-  "collections": []
+  "collections": [
+    {
+      "name": "Listings",
+      "slug": "listings",
+      "enabled": true,
+      "singular_label": "Listing",
+      "has_archive": true,
+      "archive_url": "/listings/",
+      "fields": [
+        { "key": "title", "type": "text", "required": true },
+        { "key": "description", "type": "text", "required": true },
+        { "key": "image", "type": "text", "required": true },
+        { "key": "image_alt", "type": "text" },
+        { "key": "image_interior", "type": "text" },
+        { "key": "image_detail", "type": "text" },
+        { "key": "address", "type": "text", "required": true },
+        { "key": "city", "type": "text", "required": true },
+        { "key": "state", "type": "text" },
+        { "key": "zip", "type": "text" },
+        { "key": "price", "type": "number", "required": true },
+        { "key": "beds", "type": "number", "required": true },
+        { "key": "baths", "type": "number", "required": true },
+        { "key": "sqft", "type": "number", "required": true },
+        { "key": "lot_size", "type": "text" },
+        { "key": "year_built", "type": "number" },
+        { "key": "property_type", "type": "text" },
+        { "key": "status", "type": "text" },
+        { "key": "mls", "type": "text" },
+        { "key": "featured", "type": "checkbox" },
+        { "key": "agent", "type": "text" },
+        { "key": "date", "type": "date" }
+      ]
+    }
+  ]
 }

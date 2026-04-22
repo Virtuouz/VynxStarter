@@ -1,0 +1,683 @@
+---
+import Layout from "@layouts/BaseLayout.astro";
+
+const { item } = Astro.props;
+const d = item.data;
+
+const formattedPrice = typeof d.price === "number" ? `$${d.price.toLocaleString("en-US")}` : d.price;
+const formattedSqft = typeof d.sqft === "number" ? d.sqft.toLocaleString("en-US") : d.sqft;
+const formattedYear = d.year_built || "—";
+
+const specs = [
+  { label: "Bedrooms", value: d.beds },
+  { label: "Bathrooms", value: d.baths },
+  { label: "Interior", value: d.sqft ? `${formattedSqft} sq ft` : null },
+  { label: "Lot Size", value: d.lot_size },
+  { label: "Year Built", value: formattedYear },
+  { label: "Property Type", value: d.property_type },
+  { label: "MLS", value: d.mls },
+  { label: "Status", value: d.status },
+].filter((s) => s.value);
+---
+
+<Layout
+  title={d.title || d.address}
+  description={d.description}
+  image={d.image}
+>
+  <article class="listing">
+    <a
+      class="listing-back"
+      href="/listings/"
+    >
+      ← All Listings
+    </a>
+
+    <header class="listing-hero">
+      <div class="listing-hero-media">
+        <img
+          src={d.image}
+          alt={d.image_alt || d.title || d.address}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <div class="listing-hero-body">
+        <div class="listing-status-row">
+          {d.status && <span class="listing-status">{d.status}</span>}
+          {d.property_type && <span class="listing-type">{d.property_type}</span>}
+          {d.mls && <span class="listing-mls">MLS {d.mls}</span>}
+        </div>
+        <p class="listing-eyebrow">
+          {d.city}{d.state ? `, ${d.state}` : ""}
+        </p>
+        <h1 class="listing-title">{d.title || d.address}</h1>
+        <p class="listing-address">
+          {d.address}{d.city ? ` · ${d.city}` : ""}{d.state ? `, ${d.state}` : ""}{d.zip ? ` ${d.zip}` : ""}
+        </p>
+        <div class="listing-price-block">
+          <span class="listing-price">{formattedPrice}</span>
+          <span class="listing-price-note">Offered at</span>
+        </div>
+
+        <div class="listing-quick-specs">
+          <div>
+            <span class="qs-num">{d.beds}</span>
+            <span class="qs-label">Beds</span>
+          </div>
+          <div>
+            <span class="qs-num">{d.baths}</span>
+            <span class="qs-label">Baths</span>
+          </div>
+          <div>
+            <span class="qs-num">{formattedSqft}</span>
+            <span class="qs-label">Sq Ft</span>
+          </div>
+          {
+            d.lot_size && (
+              <div>
+                <span class="qs-num">{d.lot_size}</span>
+                <span class="qs-label">Lot</span>
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </header>
+
+    <section class="listing-body">
+      <div class="listing-copy">
+        <div class="listing-description">
+          {d.description && <p class="listing-lede">{d.description}</p>}
+          <slot />
+        </div>
+
+        {
+          d.image_interior && (
+            <figure class="listing-figure">
+              <img
+                src={d.image_interior}
+                alt={`${d.title || d.address} — interior`}
+                loading="lazy"
+              />
+            </figure>
+          )
+        }
+
+        <div class="listing-specs">
+          <h2 class="listing-section-title">Property Details</h2>
+          <dl class="listing-specs-grid">
+            {
+              specs.map((spec) => (
+                <div class="spec-row">
+                  <dt>{spec.label}</dt>
+                  <dd>{spec.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+
+        {
+          d.image_detail && (
+            <figure class="listing-figure listing-figure-wide">
+              <img
+                src={d.image_detail}
+                alt={`${d.title || d.address} — detail`}
+                loading="lazy"
+              />
+            </figure>
+          )
+        }
+      </div>
+
+      <aside class="listing-aside">
+        <div class="listing-card">
+          {
+            d.agent && (
+              <p class="agent-label">Listed by</p>
+            )
+          }
+          <p class="agent-name">{d.agent || "The Elevate Team"}</p>
+          <p class="agent-role">Elevate Idaho · Broker Associate</p>
+
+          <a
+            class="listing-cta"
+            href={`/contact/?listing=${encodeURIComponent(d.address || "")}`}
+          >
+            Request a private showing
+            <span aria-hidden="true">→</span>
+          </a>
+
+          <hr class="listing-card-divider" />
+
+          <dl class="listing-card-meta">
+            <div>
+              <dt>Direct</dt>
+              <dd>(208) 555-0128</dd>
+            </div>
+            <div>
+              <dt>Email</dt>
+              <dd>
+                <a href="mailto:hello@elevateidaho.com">hello@elevateidaho.com</a>
+              </dd>
+            </div>
+          </dl>
+
+          <p class="listing-disclaimer">
+            Information deemed reliable but not guaranteed. Elevate Idaho is an
+            Equal Housing Opportunity brokerage.
+          </p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="listing-cta-block">
+      <div class="listing-cta-block-inner">
+        <p class="cta-eyebrow">Considering this home?</p>
+        <h2 class="cta-heading">
+          Let's walk the property together.
+        </h2>
+        <p class="cta-subtext">
+          Most of our transactions begin with a conversation. Share a few details and
+          we'll arrange a private tour on your schedule — in person or virtual.
+        </p>
+        <div class="cta-buttons">
+          <a
+            class="cta-button cta-button-primary"
+            href={`/contact/?listing=${encodeURIComponent(d.address || "")}`}
+          >
+            Schedule a tour
+          </a>
+          <a
+            class="cta-button cta-button-ghost"
+            href="/listings/"
+          >
+            Explore the portfolio
+          </a>
+        </div>
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  @layer page-sections {
+    .listing {
+      background: var(--color-bg);
+    }
+
+    .listing-back {
+      color: var(--color-text-muted);
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      margin: 1.5rem 0 0 2rem;
+      padding: 0.5rem 0.75rem 0.5rem 0;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+    }
+
+    .listing-back:hover {
+      color: var(--color-text-strong);
+    }
+
+    .listing-hero {
+      display: grid;
+      gap: clamp(2rem, 4vw, 4rem);
+      grid-template-columns: 1fr;
+      margin-inline: auto;
+      max-width: 90rem;
+      padding: 2rem clamp(1.25rem, 3vw, 3rem) clamp(3rem, 5vw, 5rem);
+    }
+
+    @media (min-width: 960px) {
+      .listing-hero {
+        grid-template-columns: minmax(0, 1.4fr) minmax(20rem, 1fr);
+        align-items: end;
+      }
+    }
+
+    .listing-hero-media {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .listing-hero-media::after {
+      background: linear-gradient(
+        to bottom right,
+        transparent 0%,
+        transparent 70%,
+        rgba(28, 25, 21, 0.08) 100%
+      );
+      content: "";
+      inset: 0;
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .listing-hero-media img {
+      display: block;
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .listing-hero-body {
+      padding: 0;
+    }
+
+    .listing-status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .listing-status,
+    .listing-type,
+    .listing-mls {
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      padding: 0.3rem 0.65rem;
+      text-transform: uppercase;
+    }
+
+    .listing-status {
+      background: var(--color-brand);
+      border-color: var(--color-brand);
+      color: var(--color-text-on-brand);
+    }
+
+    .listing-eyebrow {
+      color: var(--color-text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      margin: 0 0 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .listing-title {
+      color: var(--color-text-strong);
+      font-family: var(--font-headings);
+      font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin: 0 0 0.75rem;
+    }
+
+    .listing-address {
+      color: var(--color-text-muted);
+      font-size: 1rem;
+      margin: 0 0 2rem;
+    }
+
+    .listing-price-block {
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 1.25rem 0;
+      margin-bottom: 2rem;
+    }
+
+    .listing-price {
+      color: var(--color-text-strong);
+      font-family: var(--font-headings);
+      font-size: clamp(2rem, 3.5vw, 2.75rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    .listing-price-note {
+      color: var(--color-text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .listing-quick-specs {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+    }
+
+    .listing-quick-specs > div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .listing-quick-specs > div + div {
+      border-left: 1px solid var(--color-border-subtle);
+      padding-left: 1rem;
+    }
+
+    .qs-num {
+      color: var(--color-text-strong);
+      font-family: var(--font-headings);
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+
+    .qs-label {
+      color: var(--color-text-muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      margin-top: 0.25rem;
+      text-transform: uppercase;
+    }
+
+    .listing-body {
+      display: grid;
+      gap: clamp(2rem, 4vw, 4rem);
+      grid-template-columns: 1fr;
+      margin-inline: auto;
+      max-width: 80rem;
+      padding: 0 clamp(1.25rem, 3vw, 3rem) clamp(4rem, 6vw, 6rem);
+    }
+
+    @media (min-width: 960px) {
+      .listing-body {
+        grid-template-columns: minmax(0, 1.6fr) minmax(20rem, 1fr);
+        align-items: start;
+      }
+    }
+
+    .listing-copy {
+      max-width: 54rem;
+    }
+
+    .listing-lede {
+      color: var(--color-text-strong);
+      font-family: var(--font-headings);
+      font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      margin: 0 0 2rem;
+      padding-left: 1.5rem;
+      border-left: 2px solid var(--color-brand);
+    }
+
+    .listing-description :global(p) {
+      color: var(--color-text);
+      font-size: 1.05rem;
+      line-height: 1.75;
+      margin: 0 0 1.25rem;
+    }
+
+    .listing-description :global(h2) {
+      color: var(--color-text-strong);
+      font-family: var(--font-headings);
+      font-size: 1.75rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin: 2.5rem 0 1rem;
+    }
+
+    .listing-figure {
+      aspect-ratio: 3 / 2;
+      margin: 3rem 0;
+      overflow: hidden;
+    }
+
+    .listing-figure-wide {
+      aspect-ratio: 16 / 9;
+    }
+
+    .listing-figure img {
+      display: block;
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .listing-section-title {
+      color: var(--color-text-strong);
+      font-family: var(--font-headings);
+      font-size: 1.75rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin: 0 0 1.5rem;
+    }
+
+    .listing-section-title::before {
+      background: var(--color-brand);
+      content: "";
+      display: inline-block;
+      height: 1px;
+      margin-right: 0.75rem;
+      vertical-align: middle;
+      width: 2rem;
+    }
+
+    .listing-specs-grid {
+      border-top: 1px solid var(--color-border-subtle);
+      display: grid;
+      gap: 0;
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      margin: 0;
+    }
+
+    .listing-specs-grid .spec-row {
+      border-bottom: 1px solid var(--color-border-subtle);
+      display: flex;
+      justify-content: space-between;
+      padding: 0.9rem 0;
+    }
+
+    .listing-specs-grid .spec-row:nth-child(odd) {
+      padding-right: 1.5rem;
+    }
+
+    .listing-specs-grid .spec-row:nth-child(even) {
+      padding-left: 1.5rem;
+    }
+
+    .listing-specs-grid dt {
+      color: var(--color-text-muted);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .listing-specs-grid dd {
+      color: var(--color-text-strong);
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .listing-aside {
+      position: sticky;
+      top: 2rem;
+    }
+
+    .listing-card {
+      background: var(--color-bg-surface);
+      border-radius: var(--radius-card);
+      padding: 2rem;
+    }
+
+    .agent-label {
+      color: var(--color-text-muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      margin: 0 0 0.4rem;
+      text-transform: uppercase;
+    }
+
+    .agent-name {
+      color: var(--color-text-strong);
+      font-family: var(--font-headings);
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin: 0 0 0.25rem;
+    }
+
+    .agent-role {
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+      margin: 0 0 1.5rem;
+    }
+
+    .listing-cta {
+      background: var(--color-brand);
+      border-radius: var(--radius-button);
+      color: var(--color-text-on-brand);
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      justify-content: space-between;
+      padding: 0.95rem 1.25rem;
+      text-decoration: none;
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+
+    .listing-cta:hover {
+      background: var(--color-brand-muted);
+      transform: translateY(-1px);
+    }
+
+    .listing-cta span {
+      transition: transform 0.25s ease;
+    }
+
+    .listing-cta:hover span {
+      transform: translateX(3px);
+    }
+
+    .listing-card-divider {
+      background: var(--color-border);
+      border: none;
+      height: 1px;
+      margin: 1.75rem 0 1.5rem;
+    }
+
+    .listing-card-meta {
+      display: grid;
+      gap: 0.9rem;
+      margin: 0 0 1.5rem;
+    }
+
+    .listing-card-meta dt {
+      color: var(--color-text-muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      margin-bottom: 0.2rem;
+      text-transform: uppercase;
+    }
+
+    .listing-card-meta dd {
+      color: var(--color-text-strong);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .listing-card-meta dd a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .listing-card-meta dd a:hover {
+      color: var(--color-link);
+    }
+
+    .listing-disclaimer {
+      color: var(--color-text-muted);
+      font-size: 0.72rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .listing-cta-block {
+      background: var(--color-bg-inverse);
+      color: var(--color-text-on-brand);
+      padding: clamp(4rem, 7vw, 6rem) clamp(1.25rem, 3vw, 3rem);
+    }
+
+    .listing-cta-block-inner {
+      margin-inline: auto;
+      max-width: 48rem;
+      text-align: center;
+    }
+
+    .cta-eyebrow {
+      color: var(--color-brand-subtle);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      margin: 0 0 1.25rem;
+      text-transform: uppercase;
+    }
+
+    .cta-heading {
+      color: var(--color-text-on-brand);
+      font-family: var(--font-headings);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin: 0 0 1.5rem;
+    }
+
+    .cta-subtext {
+      color: var(--color-brand-subtle);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin: 0 auto 2.5rem;
+      max-width: 34rem;
+    }
+
+    .cta-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .cta-button {
+      border-radius: var(--radius-button);
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      padding: 0.95rem 1.75rem;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .cta-button-primary {
+      background: var(--color-bg);
+      color: var(--color-text-strong);
+    }
+
+    .cta-button-primary:hover {
+      background: var(--color-bg-surface);
+      transform: translateY(-1px);
+    }
+
+    .cta-button-ghost {
+      border: 1px solid rgba(245, 241, 234, 0.25);
+      color: var(--color-text-on-brand);
+    }
+
+    .cta-button-ghost:hover {
+      background: rgba(245, 241, 234, 0.08);
+      border-color: rgba(245, 241, 234, 0.5);
+    }
+  }
+</style>

@@ -1,8 +1,8 @@
 {
-  "name": "Astro Component Starter",
-  "url": "https://example.com",
-  "description": "",
+  "name": "Elevate Idaho",
+  "url": "https://elevateidaho.com",
+  "description": "Idaho's boutique real estate brokerage — thoughtful representation for exceptional homes from Boise to the North Idaho lakes.",
   "logoSource": "/images/logo.svg",
-  "titleFormat": "{title} | Astro Component Starter",
-  "twitterHandle": "@yourusername"
+  "titleFormat": "{title} · Elevate Idaho",
+  "twitterHandle": "@elevateidaho"
 }

@@ -1,155 +1,151 @@
 ---
 _schema: default
-title: Astro Component Starter
-description: Build fast, customizable Astro sites with a modern component starter that is easy to edit and maintain.
+title: Elevate Idaho
+description: Boutique representation for exceptional Idaho real estate — from Boise's North End to the lakes and mountains of North and Central Idaho.
 pageSections:
-  - _component: page-sections/heroes/hero-center
-    eyebrow:
-    heading: The Astro Component Starter for building any site
+  - _component: page-sections/heroes/hero-split
+    eyebrow: Idaho · Est. 2014
+    heading: A quieter way to sell — and find — an Idaho home.
     subtext: >-
-      Built on web fundamentals. Easy to customize, fast to use, and simple to
-      maintain.
+      <p>Elevate is a small, intentionally-staffed brokerage. We take on fewer
+      listings than our peers, so the work of representing a home is done
+      carefully, completely, and on your timeline.</p>
+    imageSource: https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=80
+    imageAlt: A modern Idaho home at dusk
+    imageAspectRatio: portrait
+    imageRounded: true
     buttonSections:
       - _component: building-blocks/core-elements/button
-        text: Explore Components
+        text: View the portfolio
         hideText: false
-        link: /component-docs/
+        link: /listings/
         iconName: ''
         iconPosition: before
         variant: primary
         size: md
       - _component: building-blocks/core-elements/button
-        text: View in GitHub
+        text: Meet the team
         hideText: false
-        link: https://github.com/CloudCannon/astro-component-starter
+        link: /agents/
         iconName: ''
         iconPosition: before
-        variant: secondary
+        variant: tertiary
         size: md
-    colorScheme: inherit
-    backgroundColor: base
-  - _component: page-sections/features/feature-split
-    eyebrow: Built for Astro
-    heading: Fast, modern, and easy to work with
-    subtext: >-
-      The Component Starter takes full advantage of Astro's zero-JS-by-default
-      approach. You get fast pages, simple routing, and a component system that
-      stays easy to use as your site grows.
-    buttonSections: []
-    imageSource: /src/assets/images/component-docs/website-feature.svg
-    imageAlt: Website Feature
-    imageAspectRatio: none
-    imageRounded: false
     reverse: false
     colorScheme: inherit
     backgroundColor: base
-  - _component: page-sections/features/feature-split
-    eyebrow: CloudCannon Ready
-    heading: Easy visual editing
+    paddingVertical: 4xl
+  - _component: page-sections/listings/featured-listings
+    eyebrow: The Portfolio
+    heading: Currently on offer
     subtext: >-
-      Every component is built to work seamlessly in CloudCannon's Visual
-      Editor. Developers can create and style custom Page Sections with Astro.
-      Editors can click, change, and rearrange content right on the page without
-      touching the code or guessing where anything lives.
-    buttonSections: []
-    imageSource: /src/assets/images/component-docs/website-split.svg
-    imageAlt: Website Split
-    imageAspectRatio: none
-    imageRounded: false
-    reverse: true
-    colorScheme: inherit
-    backgroundColor:
-    paddingVertical: lg
-  - _component: page-sections/features/feature-split
-    eyebrow: Performance
-    heading: Fast by architecture, not by accident
-    subtext: >-
-      Your components render to static HTML, keeping bundles lean and pages
-      instant. Your users get instant page loads. You get a modern developer
-      experience.
-    buttonSections: []
-    imageSource: /src/assets/images/component-docs/website-hero.svg
-    imageAlt: Website Hero
-    imageAspectRatio: none
-    imageRounded: false
-    reverse: false
-    colorScheme: inherit
-    backgroundColor: base
-  - _component: page-sections/features/feature-split
-    eyebrow: Documentation
-    heading: Every component, clearly documented
-    subtext: >-
-      Each component comes with straightforward docs, real examples, full
-      descriptions of every property, and clear guidance without having to dig
-      through source files.
-    buttonSections: []
-    imageSource: /src/assets/images/component-docs/website-documented.svg
-    imageAlt: Website Hero
-    imageAspectRatio: none
-    imageRounded: false
-    reverse: true
-    colorScheme: inherit
-    backgroundColor: base
+      A rotating selection of homes we are actively representing across Idaho.
+      Private off-market opportunities are available on request.
+    limit: 3
+    backgroundColor: surface
   - _component: page-sections/features/feature-grid
-    eyebrow: Principles
-    heading: Built for real-world web projects
-    subtext: No trends. No noise. Just reliability.
+    eyebrow: The Elevate Approach
+    heading: What representation actually means here.
+    subtext: >-
+      Four quiet commitments we make on every transaction.
     gap: xl
     minItemWidth: 280
     maxItemWidth: 360
     features:
-      - title: Web fundamentals
+      - title: Fewer listings, better outcomes
         description: >-
-          Semantic HTML. Lean CSS. JavaScript only when it's needed. The stack
-          is boring by design, and that’s exactly why it works.
+          Each agent represents no more than six active listings. That ceiling
+          is a deliberate constraint — it's how we make room for the work a
+          significant home actually requires.
         iconName: cube
-        iconColor: blue
-      - title: Built for speed
-        description: >-
-          Static-rendered, minimal payloads, zero waste. Built to be extremely
-          fast from the first byte.
-        iconName: bolt
-        iconColor: yellow
-      - title: Everything just fits
-        description: >-
-          Simple, predictable components that play nice together. Build bigger
-          pieces without creating a maintenance mess.
-        iconName: puzzle-piece
         iconColor: green
-      - title: Controlled editing
+      - title: Photography, styled properly
         description: >-
-          Enough freedom for editors to move fast. Enough structure for
-          developers to sleep at night.
-        iconName: pencil
-        iconColor: purple
-      - title: Adaptable
-        description: >-
-          Purposefully plain styling. The whole component starter adapts to your
-          designs without a fight.
+          Every listing receives professional architectural photography and,
+          where the home merits it, light styling and a short film. Paid for by
+          us, never billed back.
         iconName: paint-brush
-        iconColor: pink
+        iconColor: orange
+      - title: Private-first marketing
+        description: >-
+          We launch every listing to our private buyer network for seven days
+          before public marketing begins. Many homes sell before they ever hit
+          the MLS.
+        iconName: pencil
+        iconColor: yellow
+      - title: Transactional discretion
+        description: >-
+          NDAs, anonymous offers, and quiet closings are available on request.
+          Your name doesn't need to be on a postcard to sell a home well.
+        iconName: puzzle-piece
+        iconColor: blue
     colorScheme: inherit
-    backgroundColor: surface
+    backgroundColor: base
     align: center
-  - _component: page-sections/ctas/cta-center
-    heading: Ready to start building?
+    paddingVertical: 4xl
+  - _component: page-sections/features/feature-split
+    eyebrow: Where we work
+    heading: Local knowledge, tested block by block.
     subtext: >-
-      Browse the complete Astro Component Starter and see live examples of every
-      component in action. All components are ready to use in CloudCannon and
-      are fully customizable.
+      <p>Our agents don't cover the whole state — they cover the neighborhoods
+      they live in. Boise's North End and East End. Eagle along the river. The
+      Wood River Valley from Hailey to Ketchum. Coeur d'Alene, Sandpoint, and
+      the lakes in between. McCall and the Payette Lakes basin.</p>
+
+
+      <p>When you ask us about a street, an HOA, or whether the sun really
+      clears the ridgeline in January, you'll get an honest answer — because
+      someone on our team walked it last week.</p>
+    imageSource: https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=1600&q=80
+    imageAlt: Idaho mountain landscape with cabin
+    imageAspectRatio: portrait
+    imageRounded: true
     buttonSections:
       - _component: building-blocks/core-elements/button
-        text: Explore Components
+        text: Read about our firm
         hideText: false
-        link: /component-docs/
+        link: /about/
+        iconName: ''
+        iconPosition: before
+        variant: secondary
+        size: md
+    reverse: true
+    colorScheme: inherit
+    backgroundColor: base
+    paddingVertical: 4xl
+  - _component: page-sections/people/testimonial-section
+    text: >-
+      Elevate handled the sale of our family's 1910 home with a kind of care
+      we hadn't expected. It took four months longer than the "average" sale in
+      our zip code, because it needed to. We're still grateful.
+    authorName: The Sullivan Family
+    authorDescription: Boise, North End · Represented 2025
+    authorImage: https://images.unsplash.com/photo-1600566753051-6057ed9ef4b4?auto=format&fit=crop&w=600&q=80
+    alignX: center
+    maxContentWidth: xl
+    paddingHorizontal: xl
+    paddingVertical: 4xl
+    colorScheme: dark
+    backgroundColor: surface
+  - _component: page-sections/ctas/cta-center
+    heading: Thinking about a move?
+    subtext: >-
+      Most of our relationships begin over coffee, long before anyone signs
+      anything. If you're considering selling — or looking — we'd be glad to
+      meet.
+    buttonSections:
+      - _component: building-blocks/core-elements/button
+        text: Request an introduction
+        hideText: false
+        link: /contact/
         iconName: ''
         iconPosition: before
         variant: primary
         size: md
       - _component: building-blocks/core-elements/button
-        text: View in GitHub
+        text: Explore all listings
         hideText: false
-        link: https://github.com/CloudCannon/astro-component-starter
+        link: /listings/
         iconName: ''
         iconPosition: before
         variant: tertiary
@@ -157,4 +153,5 @@ pageSections:
     colorScheme: dark
     backgroundColor: surface
     rounded: false
+    paddingVertical: 4xl
 ---

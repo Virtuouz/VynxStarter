@@ -1,17 +1,15 @@
 ---
 _schema: default
-title: Blog
-description: >-
-  Read our latest articles and insights on web development, design, and
-  technology.
+title: The Journal
+description: Field notes from the Elevate Idaho team — on Idaho's neighborhoods, the markets we cover, and how thoughtful representation actually works.
 pageSections:
   - _component: page-sections/heroes/hero-center
-    eyebrow: ''
-    heading: All posts
+    eyebrow: The Journal
+    heading: Field notes from our agents.
     subtext: >-
-      This paginated blog index displays a grid of article cards, each waiting
-      to be populated with genuine posts once your content strategy moves beyond
-      placeholder text.
+      Irregular writing on Idaho's neighborhoods, the slow craft of
+      representation, and the small details that separate a good home sale
+      from a great one.
     buttonSections: []
     colorScheme: inherit
     backgroundColor: base

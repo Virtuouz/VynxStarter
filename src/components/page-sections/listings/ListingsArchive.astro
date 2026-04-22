@@ -1,0 +1,343 @@
+---
+import PropertyCard from "./PropertyCard.astro";
+
+const { items = [] } = Astro.props;
+
+const normalized = items
+  .map((item: any) => {
+    const slug = item.id?.replace(/\.md$/, "") || item.slug;
+    return { ...item.data, slug };
+  })
+  .sort((a: any, b: any) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+
+const cities = Array.from(
+  new Set(normalized.map((i: any) => i.city).filter(Boolean))
+) as string[];
+
+const types = Array.from(
+  new Set(normalized.map((i: any) => i.property_type).filter(Boolean))
+) as string[];
+
+const prices = normalized.map((i: any) => i.price).filter((p: any) => typeof p === "number");
+const totalCount = normalized.length;
+const avgPrice = prices.length
+  ? Math.round(prices.reduce((a: number, b: number) => a + b, 0) / prices.length)
+  : 0;
+---
+
+<section class="listings-archive">
+  <div class="listings-hero">
+    <div class="listings-hero-inner">
+      <span class="listings-eyebrow">The Portfolio</span>
+      <h1 class="listings-heading">
+        Exceptional Idaho homes,<br />
+        <em>thoughtfully represented.</em>
+      </h1>
+      <p class="listings-lede">
+        A curated selection of residences across Boise's historic neighborhoods, the
+        lakes of North Idaho, and the alpine meadows of the Wood River Valley.
+      </p>
+      <dl class="listings-stats">
+        <div>
+          <dt>Active Homes</dt>
+          <dd>{totalCount}</dd>
+        </div>
+        <div>
+          <dt>Average Price</dt>
+          <dd>
+            {
+              avgPrice
+                ? `$${Math.round(avgPrice / 1000).toLocaleString("en-US")}k`
+                : "—"
+            }
+          </dd>
+        </div>
+        <div>
+          <dt>Markets</dt>
+          <dd>{cities.length}</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="listings-toolbar">
+    <div class="listings-toolbar-inner">
+      <div class="filters">
+        <button
+          class="chip chip-active"
+          type="button"
+          aria-pressed="true"
+        >
+          All markets
+        </button>
+        {
+          cities.map((city) => (
+            <button
+              class="chip"
+              type="button"
+              aria-pressed="false"
+            >
+              {city}
+            </button>
+          ))
+        }
+      </div>
+      <div class="filters">
+        <button
+          class="chip chip-muted chip-active"
+          type="button"
+          aria-pressed="true"
+        >
+          Any type
+        </button>
+        {
+          types.map((type) => (
+            <button
+              class="chip chip-muted"
+              type="button"
+              aria-pressed="false"
+            >
+              {type}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="listings-grid-wrap">
+    {
+      normalized.length > 0 ? (
+        <div class="listings-grid">
+          {normalized.map((l: any) => (
+            <PropertyCard
+              slug={l.slug}
+              title={l.title}
+              image={l.image}
+              imageAlt={l.image_alt}
+              address={l.address}
+              city={l.city}
+              state={l.state}
+              price={l.price}
+              beds={l.beds}
+              baths={l.baths}
+              sqft={l.sqft}
+              status={l.status}
+              propertyType={l.property_type}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="listings-empty">New listings coming soon. Contact us for off-market opportunities.</p>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  @layer page-sections {
+    .listings-archive {
+      background: var(--color-bg);
+    }
+
+    .listings-hero {
+      background: var(--color-bg-surface);
+      border-bottom: 1px solid var(--color-border-subtle);
+      padding: clamp(4rem, 8vw, 7rem) var(--spacing-lg) clamp(3rem, 6vw, 5rem);
+      position: relative;
+    }
+
+    .listings-hero::before {
+      background-image:
+        radial-gradient(
+          circle at 20% 20%,
+          rgba(124, 142, 120, 0.18) 0%,
+          transparent 40%
+        ),
+        radial-gradient(
+          circle at 80% 60%,
+          rgba(138, 90, 59, 0.12) 0%,
+          transparent 45%
+        );
+      content: "";
+      inset: 0;
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .listings-hero-inner {
+      margin-inline: auto;
+      max-width: 72rem;
+      position: relative;
+    }
+
+    .listings-eyebrow {
+      color: var(--color-text-muted);
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .listings-eyebrow::before {
+      background: var(--color-brand);
+      content: "";
+      display: inline-block;
+      height: 1px;
+      margin-right: 0.75rem;
+      vertical-align: middle;
+      width: 2rem;
+    }
+
+    .listings-heading {
+      color: var(--color-text-strong);
+      font-family: var(--font-headings);
+      font-size: clamp(2.5rem, 5.5vw, 4.75rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.02;
+      margin: 0 0 1.5rem;
+      max-width: 22ch;
+    }
+
+    .listings-heading em {
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .listings-lede {
+      color: var(--color-text-muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin: 0 0 2.5rem;
+      max-width: 48ch;
+    }
+
+    .listings-stats {
+      border-top: 1px solid var(--color-border);
+      display: grid;
+      gap: 0;
+      grid-template-columns: repeat(3, auto);
+      margin: 0;
+      max-width: 32rem;
+      padding-top: 1.5rem;
+    }
+
+    .listings-stats dt {
+      color: var(--color-text-muted);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+    }
+
+    .listings-stats dd {
+      color: var(--color-text-strong);
+      font-family: var(--font-headings);
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    .listings-stats > div + div {
+      padding-left: 2rem;
+    }
+
+    .listings-toolbar {
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border-subtle);
+      padding: 1.5rem var(--spacing-lg);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .listings-toolbar-inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem 3rem;
+      justify-content: space-between;
+      margin-inline: auto;
+      max-width: 80rem;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .chip {
+      background: transparent;
+      border: 1px solid var(--color-border);
+      border-radius: 999px;
+      color: var(--color-text);
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      padding: 0.5rem 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .chip:hover {
+      background: var(--color-state-hover);
+      border-color: var(--color-border-strong);
+    }
+
+    .chip-active {
+      background: var(--color-brand);
+      border-color: var(--color-brand);
+      color: var(--color-text-on-brand);
+    }
+
+    .chip-active:hover {
+      background: var(--color-brand-muted);
+    }
+
+    .chip-muted {
+      background: var(--color-bg-surface);
+      border-color: transparent;
+      color: var(--color-text-muted);
+    }
+
+    .chip-muted.chip-active {
+      background: var(--color-text-strong);
+      color: var(--color-text-on-brand);
+    }
+
+    .listings-grid-wrap {
+      margin-inline: auto;
+      max-width: 80rem;
+      padding: clamp(3rem, 5vw, 4.5rem) var(--spacing-lg) clamp(4rem, 7vw, 6rem);
+    }
+
+    .listings-grid {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    }
+
+    .listings-empty {
+      color: var(--color-text-muted);
+      font-size: 1.1rem;
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      .listings-stats dd {
+        font-size: 1.5rem;
+      }
+
+      .listings-stats > div + div {
+        padding-left: 1rem;
+      }
+    }
+  }
+</style>

@@ -1,12 +1,14 @@
 {
   "logo": {
     "source": "/images/logo.svg",
-    "alt": "Logo"
+    "alt": "Elevate Idaho"
   },
   "primary": [
-    { "label": "Home", "url": "/" },
-    { "label": "Why", "url": "/why/" },
-    { "label": "Blog", "url": "/blog/" }
+    { "label": "Listings", "url": "/listings/" },
+    { "label": "Agents", "url": "/agents/" },
+    { "label": "About", "url": "/about/" },
+    { "label": "Journal", "url": "/blog/" },
+    { "label": "Contact", "url": "/contact/" }
   ],
   "cta": {
     "label": "Search",
@@ -15,12 +17,37 @@
   },
   "footer": {
     "use_primary": true,
-    "columns": [],
-    "socials": [
-      { "icon": "social/github", "link": "https://github.com" },
-      { "icon": "social/x", "link": "https://twitter.com" },
-      { "icon": "social/linkedin", "link": "https://linkedin.com" }
+    "columns": [
+      {
+        "title": "Explore",
+        "links": [
+          { "label": "Featured Listings", "url": "/listings/" },
+          { "label": "Our Agents", "url": "/agents/" },
+          { "label": "The Journal", "url": "/blog/" }
+        ]
+      },
+      {
+        "title": "Firm",
+        "links": [
+          { "label": "About Elevate", "url": "/about/" },
+          { "label": "Contact", "url": "/contact/" },
+          { "label": "Search", "url": "/search/" }
+        ]
+      },
+      {
+        "title": "Office",
+        "links": [
+          { "label": "223 N 6th St · Boise, ID 83702", "url": "/contact/" },
+          { "label": "(208) 555-0128", "url": "tel:+12085550128" },
+          { "label": "hello@elevateidaho.com", "url": "mailto:hello@elevateidaho.com" }
+        ]
+      }
     ],
-    "text": "© 2026 All rights reserved."
+    "socials": [
+      { "icon": "social/instagram", "link": "https://instagram.com/elevateidaho" },
+      { "icon": "social/facebook", "link": "https://facebook.com/elevateidaho" },
+      { "icon": "social/linkedin", "link": "https://linkedin.com/company/elevateidaho" }
+    ],
+    "text": "© 2026 Elevate Idaho Real Estate, LLC · Licensed in the State of Idaho · Equal Housing Opportunity"
   }
 }

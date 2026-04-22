@@ -7,6 +7,7 @@ import CustomSection from "@page-sections/builders/custom-section/CustomSection.
 import Card from "@wrappers/card/Card.astro";
 import Grid from "@wrappers/grid/Grid.astro";
 import GridItem from "@wrappers/grid/GridItem.astro";
+import ListingsArchive from "@components/page-sections/listings/ListingsArchive.astro";
 import { getCollection } from "astro:content";
 
 interface CollectionDef {
@@ -56,52 +57,59 @@ interface Props {
 }
 
 const { collectionDef, items } = Astro.props;
+const isListings = collectionDef.slug === "listings";
 ---
 
-<Page title={collectionDef.name}>
-  <CustomSection
-    maxContentWidth="2xl"
-    paddingHorizontal="lg"
-    paddingVertical="4xl"
-    colorScheme="inherit"
-    backgroundColor="base"
-  >
-    <Heading level="h1" size="2xl" style="margin-bottom: var(--spacing-xl);">
-      {collectionDef.name}
-    </Heading>
+{
+  isListings ? (
+    <Page title={collectionDef.name}>
+      <ListingsArchive items={items} />
+    </Page>
+  ) : (
+    <Page title={collectionDef.name}>
+      <CustomSection
+        maxContentWidth="2xl"
+        paddingHorizontal="lg"
+        paddingVertical="4xl"
+        colorScheme="inherit"
+        backgroundColor="base"
+      >
+        <Heading level="h1" size="2xl" style="margin-bottom: var(--spacing-xl);">
+          {collectionDef.name}
+        </Heading>
 
-    {
-      items.length > 0 ? (
-        <Grid gap="lg" layout="start" minItemWidth="320" maxItemWidth="400">
-          {items.map((item: any) => {
-            const slug = item.id?.replace(/\.md$/, "") || item.slug;
-            return (
-              <GridItem>
-                <Card
-                  link={`/${collectionDef.slug}/${slug}`}
-                  rounded={true}
-                  border={true}
-                  paddingVertical="lg"
-                  paddingHorizontal="lg"
-                >
-                  <Heading level="h3" size="md" style="margin-bottom: var(--spacing-sm);">
-                    {item.data.title || slug}
-                  </Heading>
-                  {item.data.description && (
-                    <SimpleText size="sm" style="color: var(--color-text-muted); margin-top: 0;">
-                      {item.data.description}
-                    </SimpleText>
-                  )}
-                </Card>
-              </GridItem>
-            );
-          })}
-        </Grid>
-      ) : (
-        <SimpleText alignX="center" style="margin-top: var(--spacing-2xl);">
-          No {collectionDef.name.toLowerCase()} yet. Check back soon!
-        </SimpleText>
-      )
-    }
-  </CustomSection>
-</Page>
+        {items.length > 0 ? (
+          <Grid gap="lg" layout="start" minItemWidth="320" maxItemWidth="400">
+            {items.map((item: any) => {
+              const slug = item.id?.replace(/\.md$/, "") || item.slug;
+              return (
+                <GridItem>
+                  <Card
+                    link={`/${collectionDef.slug}/${slug}`}
+                    rounded={true}
+                    border={true}
+                    paddingVertical="lg"
+                    paddingHorizontal="lg"
+                  >
+                    <Heading level="h3" size="md" style="margin-bottom: var(--spacing-sm);">
+                      {item.data.title || slug}
+                    </Heading>
+                    {item.data.description && (
+                      <SimpleText size="sm" style="color: var(--color-text-muted); margin-top: 0;">
+                        {item.data.description}
+                      </SimpleText>
+                    )}
+                  </Card>
+                </GridItem>
+              );
+            })}
+          </Grid>
+        ) : (
+          <SimpleText alignX="center" style="margin-top: var(--spacing-2xl);">
+            No {collectionDef.name.toLowerCase()} yet. Check back soon!
+          </SimpleText>
+        )}
+      </CustomSection>
+    </Page>
+  )
+}

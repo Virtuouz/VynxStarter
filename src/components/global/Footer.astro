@@ -1,0 +1,19 @@
+---
+import FooterComponent from "@components/navigation/footer/Footer.astro";
+import navigation from "@data/navigation.yaml";
+
+const links = navigation.footer.use_primary
+  ? navigation.primary.map((item: { label: string; url: string }) => ({
+      name: item.label,
+      path: item.url,
+    }))
+  : (navigation.footer.columns || []);
+---
+
+<FooterComponent
+  logoSource={navigation.logo.source}
+  logoAlt={navigation.logo.alt}
+  links={links}
+  socials={navigation.footer.socials || []}
+  footerText={navigation.footer.text || ""}
+/>

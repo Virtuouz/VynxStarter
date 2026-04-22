@@ -1,6 +1,10 @@
 ---
+import Banner from "@components/global/Banner.astro";
+import Nav from "@components/global/Nav.astro";
+import FooterGlobal from "@components/global/Footer.astro";
 import StructuredData from "@components/utils/StructuredData.astro";
-import seoData from "@data/seo.json";
+import siteData from "@data/site.yaml";
+import theme from "@data/theme.yaml";
 import "@styles/style.css";
 import SiteFonts from "@layouts/SiteFonts.astro";
 import { SEO } from "astro-seo";
@@ -14,16 +18,71 @@ export interface Props {
 }
 
 const props = Astro.props;
-const formattedTitle = seoData.titleFormat.replace("{title}", props.title);
-const pageDescription = props.description || seoData.description;
-const pageImage = props.image || seoData.logoSource;
+const formattedTitle = siteData.titleFormat.replace("{title}", props.title);
+const pageDescription = props.description || siteData.description;
+const pageImage = props.image || siteData.logoSource;
+
+// Build CSS for color groups from theme.yaml
+const colorVarMap: Record<string, string> = {
+  brand: "--color-brand",
+  brand_muted: "--color-brand-muted",
+  brand_subtle: "--color-brand-subtle",
+  brand_on: "--color-brand-on",
+  text: "--color-text",
+  text_strong: "--color-text-strong",
+  text_muted: "--color-text-muted",
+  text_on_muted: "--color-text-on-muted",
+  text_on_brand: "--color-text-on-brand",
+  text_inverse: "--color-text-inverse",
+  link: "--color-link",
+  link_hover: "--color-link-hover",
+  bg: "--color-bg",
+  bg_surface: "--color-bg-surface",
+  bg_muted: "--color-bg-muted",
+  bg_accent: "--color-bg-accent",
+  bg_highlight: "--color-bg-highlight",
+  bg_brand: "--color-bg-brand",
+  bg_brand_muted: "--color-bg-brand-muted",
+  bg_inverse: "--color-bg-inverse",
+  border: "--color-border",
+  border_inputs: "--color-border-inputs",
+  border_strong: "--color-border-strong",
+  border_subtle: "--color-border-subtle",
+  state_hover: "--color-state-hover",
+  state_active: "--color-state-active",
+  overlay: "--color-overlay",
+  focus_ring: "--color-focus-ring",
+  error: "--color-error",
+};
+
+function buildColorGroupCSS(groupColors: Record<string, string>): string {
+  return Object.entries(groupColors)
+    .filter(([key]) => colorVarMap[key])
+    .map(([key, value]) => `${colorVarMap[key]}: ${value};`)
+    .join(" ");
+}
+
+// Primary color group → :root
+const primaryCSS = theme.colors?.primary
+  ? `:root { color-scheme: light; ${buildColorGroupCSS(theme.colors.primary)} }`
+  : "";
+
+// Additional color groups → [data-color-group="name"]
+const additionalGroupsCSS = Object.entries(theme.colors || {})
+  .filter(([name]) => name !== "primary")
+  .map(([name, colors]) => `[data-color-group="${name}"] { ${buildColorGroupCSS(colors as Record<string, string>)} }`)
+  .join(" ");
+
+// Rounding tokens
+const roundingCSS = theme.rounding
+  ? `:root { --radius-button: ${theme.rounding.button}; --radius-image: ${theme.rounding.image}; --radius-card: ${theme.rounding.card}; }`
+  : "";
+
+const themeCSS = [primaryCSS, additionalGroupsCSS, roundingCSS].filter(Boolean).join(" ");
 ---
 
 <!doctype html>
-<html
-  lang="en"
-  data-theme="light"
->
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -42,6 +101,7 @@ const pageImage = props.image || seoData.logoSource;
     <style is:inline>
       @layer reset, base, components, page-sections, utils, overrides;
     </style>
+    <style is:inline set:html={themeCSS} />
 
     <SiteFonts />
 
@@ -84,7 +144,7 @@ const pageImage = props.image || seoData.logoSource;
       }}
     />
 
-    <StructuredData site={seoData} />
+    <StructuredData site={siteData} />
 
     <link
       rel="sitemap"
@@ -96,9 +156,18 @@ const pageImage = props.image || seoData.logoSource;
     <slot name="head" />
   </head>
   <body>
-    <div>
+    <slot name="banner">
+      <Banner />
+    </slot>
+    <slot name="nav">
+      <Nav />
+    </slot>
+    <main>
       <slot />
-    </div>
+    </main>
+    <slot name="footer">
+      <FooterGlobal />
+    </slot>
     <script>
       import "@choctawnationofoklahoma/lite-vimeo";
       import "@justinribeiro/lite-youtube";

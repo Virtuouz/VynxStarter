@@ -70,7 +70,7 @@ const usesAfterContentSections = !hasAfterSlot && showBeforeAfter && afterConten
   <Tag
     {...link && { href: link }}
     class:list={["card-inner", rounded && "rounded", border && "border"]}
-    data-theme={colorScheme && colorScheme !== "inherit" ? colorScheme : undefined}
+    data-color-group={colorScheme && colorScheme !== "inherit" ? colorScheme : undefined}
   >
     <Image
       class:list={["background-image"]}

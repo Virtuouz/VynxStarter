@@ -73,7 +73,7 @@ collections_config:
   data:
     path: src/data
     glob:
-      - "**/*.json"
+      - "**/*.{json,yaml,yml}"
     icon: database
     _enabled_editors:
       - data
@@ -94,12 +94,109 @@ collections_config:
           resize_style: contain
           width: 1920
           height: 1280
+      # Banner inputs
+      enabled:
+        type: switch
+        comment: Show or hide the announcement banner.
+      dismissible:
+        type: switch
+        comment: Allow visitors to dismiss the banner.
+      reappear_after:
+        type: select
+        comment: How long before a dismissed banner re-appears.
+        options:
+          values:
+            - label: "Never re-show"
+              value: false
+            - label: "After 1 day"
+              value: "1 day"
+            - label: "After 1 week"
+              value: "1 week"
+            - label: "After 1 month"
+              value: "1 month"
+      cta_text:
+        type: text
+        comment: Call-to-action button text.
+      cta_url:
+        type: url
+        comment: Call-to-action link URL.
+      # Theme color inputs
+      brand:
+        type: color
+      brand_muted:
+        type: color
+      brand_subtle:
+        type: color
+      brand_on:
+        type: color
+      text:
+        type: color
+      text_strong:
+        type: color
+      text_muted:
+        type: color
+      text_on_muted:
+        type: color
+      text_on_brand:
+        type: color
+      text_inverse:
+        type: color
+      link:
+        type: color
+      link_hover:
+        type: color
+      bg:
+        type: color
+      bg_surface:
+        type: color
+      bg_muted:
+        type: color
+      bg_accent:
+        type: color
+      bg_highlight:
+        type: color
+      bg_brand:
+        type: color
+      bg_brand_muted:
+        type: color
+      bg_inverse:
+        type: color
+      border:
+        type: color
+      border_inputs:
+        type: color
+      border_strong:
+        type: color
+      border_subtle:
+        type: color
+      state_hover:
+        type: color
+      state_active:
+        type: color
+      overlay:
+        type: color
+      focus_ring:
+        type: color
+      error:
+        type: color
+      heading_font:
+        type: text
+        comment: Font family for headings.
+      content_font:
+        type: text
+        comment: Font family for body content.
+      button:
+        type: text
+        comment: Border radius for buttons.
+      card:
+        type: text
+        comment: Border radius for cards.
 collection_groups:
   - heading: Content
     collections:
       - pages
       - blog
-  - heading: Data
+  - heading: Settings
     collections:
       - data
 _inputs:

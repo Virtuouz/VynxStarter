@@ -1,6 +1,4 @@
 ---
-import footerData from "@data/footer.json";
-import mainNavData from "@data/mainNav.json";
 import Page from "@layouts/Page.astro";
 import { getCollection, render, type CollectionEntry } from "astro:content";
 
@@ -29,10 +27,6 @@ const { page } = Astro.props;
 const { Content } = await render(page);
 ---
 
-<Page
-  frontmatter={page.data}
-  mainNav={mainNavData}
-  footer={footerData}
->
+<Page frontmatter={page.data}>
   <Content />
 </Page>

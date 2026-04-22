@@ -93,6 +93,7 @@ export default defineConfig({
     resolve: {
       alias: {
         "@components": path.resolve(__dirname, "src/components"),
+        "@global": path.resolve(__dirname, "src/components/global"),
         "@building-blocks": path.resolve(__dirname, "src/components/building-blocks"),
         "@core-elements": path.resolve(__dirname, "src/components/building-blocks/core-elements"),
         "@forms": path.resolve(__dirname, "src/components/building-blocks/forms"),

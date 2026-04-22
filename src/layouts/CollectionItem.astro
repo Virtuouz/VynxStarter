@@ -1,0 +1,78 @@
+---
+import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import CustomSection from "@page-sections/builders/custom-section/CustomSection.astro";
+import Layout from "@layouts/BaseLayout.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  collectionName: string;
+  collectionSlug: string;
+  singularLabel: string;
+}
+
+const { title, description, image, collectionName, collectionSlug } = Astro.props;
+---
+
+<Layout title={title} description={description} image={image}>
+  <CustomSection
+    maxContentWidth="xl"
+    paddingHorizontal="lg"
+    paddingVertical="4xl"
+    colorScheme="inherit"
+    backgroundColor="base"
+  >
+    <a
+      href={`/${collectionSlug}/`}
+      style="color: var(--color-link); font-size: var(--font-size-sm); margin-bottom: var(--spacing-md); display: inline-block;"
+    >
+      &larr; Back to {collectionName}
+    </a>
+
+    <Heading level="h1" size="2xl" style="margin-bottom: var(--spacing-md);">
+      {title}
+    </Heading>
+
+    {
+      description && (
+        <SimpleText
+          size="lg"
+          style="color: var(--color-text-muted); margin-bottom: var(--spacing-lg); margin-top: 0;"
+        >
+          {description}
+        </SimpleText>
+      )
+    }
+
+    {
+      image && (
+        <Image
+          source={image}
+          alt={title}
+          rounded={true}
+          aspectRatio="landscape"
+          positionVertical="center"
+          style="margin-bottom: var(--spacing-xl);"
+        />
+      )
+    }
+
+    <div class="collection-item-content">
+      <slot />
+    </div>
+  </CustomSection>
+</Layout>
+
+<style>
+  .collection-item-content {
+    margin-top: var(--spacing-xl);
+    max-width: 70ch;
+  }
+
+  .collection-item-content :global(> *:first-child) {
+    margin-top: 0;
+  }
+</style>

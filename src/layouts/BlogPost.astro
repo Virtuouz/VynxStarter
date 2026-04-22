@@ -1,0 +1,135 @@
+---
+import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import CustomSection from "@page-sections/builders/custom-section/CustomSection.astro";
+import Page from "@layouts/Page.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  date: Date;
+  author: string;
+}
+
+const { title, description, image, date, author } = Astro.props;
+
+const formattedDate = date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<Page title={title} description={description} image={image}>
+  <CustomSection
+    maxContentWidth="xl"
+    paddingHorizontal="lg"
+    paddingVertical="4xl"
+    colorScheme="inherit"
+    backgroundColor="base"
+    class="post-container"
+  >
+    <SimpleText
+      size="sm"
+      style="color: var(--color-text-muted); margin-bottom: var(--spacing-sm);"
+      data-prop="author"
+    >
+      {formattedDate} &bull; {author}
+    </SimpleText>
+
+    <Heading
+      data-prop="title"
+      level="h1"
+      size="2xl"
+      style="margin-bottom: var(--spacing-xs);"
+    >
+      {title}
+    </Heading>
+
+    {
+      description && (
+        <SimpleText
+          data-prop="description"
+          size="lg"
+          style="color: var(--color-text-muted); margin-bottom: 0; margin-top: var(--spacing-xs);"
+        >
+          {description}
+        </SimpleText>
+      )
+    }
+
+    {
+      image && (
+        <Image
+          source={image}
+          alt={title}
+          rounded={true}
+          data-prop-src="image"
+          data-prop-alt="title"
+          class="post-image"
+          aspectRatio="horizontal-strip"
+          positionVertical="center"
+        />
+      )
+    }
+
+    <div
+      class="post"
+      data-editable="text"
+      data-prop="@content"
+    >
+      <slot />
+    </div>
+  </CustomSection>
+</Page>
+
+<style is:global>
+  .post-container.custom-section > .outer-content > .content {
+    padding-bottom: 0 !important;
+  }
+
+  .post {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 70ch)
+      minmax(0, 1fr);
+    margin-inline: auto;
+    margin-top: var(--spacing-xl);
+  }
+
+  .post > * {
+    grid-column: 2;
+  }
+
+  .post > .wide,
+  .post > pre,
+  .post > .image,
+  .post > .video {
+    grid-column: 1 / -1;
+  }
+
+  .post > h1,
+  .post > h2,
+  .post > h3,
+  .post > h4,
+  .post > h5,
+  .post > h6 {
+    margin-bottom: 0;
+    margin-top: 1rem;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  .post > .astro-code {
+    margin-block: var(--spacing-xl);
+  }
+
+  .post-image {
+    margin-top: var(--spacing-xl);
+  }
+</style>

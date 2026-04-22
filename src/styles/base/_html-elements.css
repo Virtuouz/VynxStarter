@@ -14,8 +14,7 @@
     }
 
     body,
-    [data-theme="dark"],
-    [data-theme="light"] {
+    [data-color-group] {
       color: var(--color-text);
     }
 

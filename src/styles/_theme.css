@@ -1,2 +1,2 @@
-@import url("themes/_light.css");
-@import url("themes/_dark.css");
+/* Theme colors are now injected from theme.yaml via BaseLayout.astro */
+/* Additional color groups can be applied to any element with data-color-group="groupName" */

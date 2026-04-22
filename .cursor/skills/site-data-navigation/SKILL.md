@@ -1,314 +1,162 @@
 ---
 name: site-data-navigation
-description: Configure site-wide data including navigation, footer, and SEO. Use when setting up or editing mainNav.json, footer.json, seo.json, or understanding how navigation components consume data.
+description: Configure site-wide data including navigation, footer, SEO, banner, theme, and collections. Use when setting up or editing YAML data files under src/data/ or understanding how navigation components consume data.
 ---
 
 # Site Data & Navigation
 
-Site-wide data (navigation, footer, SEO) lives in JSON files under `src/data/`. These are imported directly in layouts and components, and are editable through CloudCannon's data collection.
+Site-wide data lives in YAML files under `src/data/`. These are imported in layouts and global wrapper components, and are editable through CloudCannon's data collection.
 
 ## Data files overview
 
-| File                    | Purpose           | Consumed by                      |
-| ----------------------- | ----------------- | -------------------------------- |
-| `src/data/mainNav.json` | Header navigation | `MainNav.astro` via `Page.astro` |
-| `src/data/footer.json`  | Footer content    | `Footer.astro` via `Page.astro`  |
-| `src/data/seo.json`     | SEO defaults      | `BaseLayout.astro`               |
+| File                        | Purpose                  | Consumed by                                    |
+| --------------------------- | ------------------------ | ---------------------------------------------- |
+| `src/data/site.yaml`       | Site metadata & SEO      | `BaseLayout.astro`                             |
+| `src/data/navigation.yaml` | Nav & footer links       | `global/Nav.astro`, `global/Footer.astro`      |
+| `src/data/banner.yaml`     | Announcement banner      | `global/Banner.astro`                          |
+| `src/data/theme.yaml`      | Design tokens & colors   | `BaseLayout.astro` (injected as CSS variables) |
+| `src/data/collections.yaml`| Generic collection defs  | `content.config.ts`, dynamic route pages       |
 
 ---
 
-## Navigation (`src/data/mainNav.json`)
+## Navigation (`src/data/navigation.yaml`)
 
 ### Structure
 
-```json
-{
-  "logoSource": "/images/logo.svg",
-  "logoAlt": "Logo",
-  "navData": [
-    {
-      "name": "Home",
-      "path": "/",
-      "children": []
-    },
-    {
-      "name": "Services",
-      "path": "/services/",
-      "children": [
-        {
-          "name": "Consulting",
-          "path": "/services/consulting/",
-          "children": []
-        },
-        {
-          "name": "Development",
-          "path": "/services/development/",
-          "children": []
-        }
-      ]
-    }
-  ],
-  "buttonSections": [
-    {
-      "_component": "building-blocks/core-elements/button",
-      "text": "Search",
-      "hideText": true,
-      "link": "/search/",
-      "iconName": "magnifying-glass",
-      "iconPosition": "before",
-      "variant": "ghost",
-      "size": "lg"
-    }
-  ]
-}
+```yaml
+logo:
+  source: "/images/logo.svg"
+  alt: "Logo"
+
+primary:
+  - label: "Home"
+    url: "/"
+  - label: "Services"
+    url: "/services/"
+  - label: "Blog"
+    url: "/blog/"
+
+cta:
+  label: "Search"
+  url: "/search/"
+  icon: "magnifying-glass"
+
+footer:
+  use_primary: true       # mirror primary nav in footer
+  columns: []             # only used if use_primary is false
+  socials:
+    - icon: "social/github"
+      link: "https://github.com"
+    - icon: "social/x"
+      link: "https://twitter.com"
+  text: "© 2026 All rights reserved."
 ```
-
-### Fields
-
-| Field            | Type   | Purpose                                              |
-| ---------------- | ------ | ---------------------------------------------------- |
-| `logoSource`     | string | Path to logo image (static `/images/` or asset path) |
-| `logoAlt`        | string | Alt text for logo                                    |
-| `navData`        | array  | Navigation items (up to 3 levels deep)               |
-| `buttonSections` | array  | Action buttons in the nav bar (e.g., search, CTA)    |
-
-### Navigation item shape
-
-Each item in `navData` has:
-
-| Field      | Type   | Purpose                                      |
-| ---------- | ------ | -------------------------------------------- |
-| `name`     | string | Display text                                 |
-| `path`     | string | URL path (use trailing slash)                |
-| `children` | array  | Child nav items (same shape, up to 3 levels) |
-
-Three nesting levels are supported. CloudCannon provides structure definitions for each level (`navItemLevel1`, `navItemLevel2`, `navItemLevel3`) in the nav component's inputs file.
 
 ### How it renders
 
-`MainNav.astro` receives the full JSON as props via `Page.astro`. It renders:
+`global/Nav.astro` reads `navigation.yaml` and maps the `primary` array into props for `MainNav.astro` (which expects `navData` with `{name, path, children}` shape). The CTA is mapped into a `buttonSections` array.
 
-- Logo as a linked image
-- Desktop nav using the `Bar` component with `navData`
-- Action buttons using `ButtonGroup` with `buttonSections`
-- Mobile nav using the `Mobile` component (merges `buttonSections` into `navData` as synthetic items)
+`global/Footer.astro` reads `navigation.yaml`. When `footer.use_primary` is true, it mirrors the primary nav links. Socials render as icon-only ghost buttons.
 
-The nav is sticky-positioned at the top of the page with `z-index: var(--layer-2)`.
+Both are rendered as named slot defaults in `BaseLayout.astro`. Override by passing a custom component to the slot.
 
 ---
 
-## Footer (`src/data/footer.json`)
+## Site Metadata (`src/data/site.yaml`)
 
 ### Structure
 
-```json
-{
-  "logoSource": "/images/logo.svg",
-  "logoAlt": "Logo",
-  "links": [
-    {
-      "name": "Home",
-      "path": "/"
-    },
-    {
-      "name": "About",
-      "path": "/about/"
-    },
-    {
-      "name": "Blog",
-      "path": "/blog/"
-    }
-  ],
-  "socials": [
-    {
-      "icon": "social/github",
-      "link": "https://github.com/your-org"
-    },
-    {
-      "icon": "social/x",
-      "link": "https://twitter.com/your-handle"
-    },
-    {
-      "icon": "social/linkedin",
-      "link": "https://linkedin.com/company/your-company"
-    }
-  ],
-  "footerText": "© 2026 Your Company. All rights reserved."
-}
+```yaml
+name: "Your Site Name"
+url: "https://yourdomain.com"
+description: "Default meta description."
+logoSource: "/images/logo.svg"
+titleFormat: "{title} | Your Site Name"
+twitterHandle: "@yourhandle"
 ```
 
-### Fields
-
-| Field        | Type   | Purpose                 |
-| ------------ | ------ | ----------------------- |
-| `logoSource` | string | Path to footer logo     |
-| `logoAlt`    | string | Alt text for logo       |
-| `links`      | array  | Footer navigation links |
-| `socials`    | array  | Social media icon links |
-| `footerText` | string | Copyright / legal text  |
-
-### Link item shape
-
-| Field  | Type   | Purpose      |
-| ------ | ------ | ------------ |
-| `name` | string | Display text |
-| `path` | string | URL path     |
-
-### Social item shape
-
-| Field  | Type   | Purpose                                        |
-| ------ | ------ | ---------------------------------------------- |
-| `icon` | string | Icon name from icon set (use `social/` prefix) |
-| `link` | string | Full URL to social profile                     |
-
-### Available social icons
-
-Icons live in `src/icons/social/`. Common options:
-
-- `social/github`
-- `social/x`
-- `social/linkedin`
-- `social/facebook`
-- `social/instagram`
-- `social/youtube`
-
-Check `src/icons/social/` for the full list of available SVGs.
-
-### How it renders
-
-`Footer.astro` renders:
-
-- Top row: logo + navigation links (via `Bar` component)
-- Divider
-- Bottom row: footer text + social icon buttons (ghost variant, icon-only)
+`BaseLayout.astro` uses this for `<title>`, OpenGraph meta, canonical links, and JSON-LD structured data.
 
 ---
 
-## SEO (`src/data/seo.json`)
+## Banner (`src/data/banner.yaml`)
 
 ### Structure
 
-```json
-{
-  "name": "Your Site Name",
-  "url": "https://yourdomain.com",
-  "description": "Default meta description for pages without one.",
-  "logoSource": "/images/logo.svg",
-  "titleFormat": "{title} | Your Site Name",
-  "twitterHandle": "@yourhandle"
-}
+```yaml
+enabled: false
+text: "Free consultation through end of month."
+cta_text: "Book now"
+cta_url: "/contact"
+dismissible: true
+reappear_after: "1 week"   # false | "1 day" | "1 week" | "1 month"
 ```
 
-### Fields
+`global/Banner.astro` renders at the top of every page via named slot in `BaseLayout.astro`. Dismissal logic uses localStorage with configurable reappear intervals.
 
-| Field           | Type   | Purpose                                                   |
-| --------------- | ------ | --------------------------------------------------------- |
-| `name`          | string | Site name (used in structured data)                       |
-| `url`           | string | Production URL (used in structured data, canonical links) |
-| `description`   | string | Fallback meta description                                 |
-| `logoSource`    | string | Fallback OG image                                         |
-| `titleFormat`   | string | Title template — `{title}` is replaced with page title    |
-| `twitterHandle` | string | Twitter/X handle for social cards                         |
+---
 
-### How it's consumed
+## Theme (`src/data/theme.yaml`)
 
-`BaseLayout.astro` imports `seo.json` and uses it for:
+### Structure
 
-- `<title>` tag via the title format template
-- OpenGraph meta tags (title, description, image)
-- Canonical link (page URL or override from frontmatter)
-- `StructuredData.astro` — renders JSON-LD `Organization` schema
+```yaml
+colors:
+  primary:
+    brand: "#000000"
+    text: "#2a2a2a"
+    bg: "#ffffff"
+    # ... full color token set
+  # Additional color groups applied via data-color-group="name"
 
-Per-page overrides come from page frontmatter (`description`, `image`, `canonical`). The page title is always from frontmatter; SEO data provides the wrapping format.
+typography:
+  heading_font: "Raleway"
+  content_font: "Inter"
+
+rounding:
+  button: "0.375rem"
+  image: "0.5rem"
+  card: "0.75rem"
+```
+
+`BaseLayout.astro` reads `theme.yaml` at build time and injects CSS custom properties via `<style is:inline>`. The primary color group sets `:root` variables. Additional groups generate `[data-color-group="name"]` selectors.
 
 ---
 
 ## Data flow diagram
 
 ```
-src/data/mainNav.json ─┐
-                       ├→ src/pages/[...slug].astro (imports both)
-src/data/footer.json  ─┘         │
-                                 ↓
-                        src/layouts/Page.astro
-                           │           │
-                           ↓           ↓
-                     MainNav.astro  Footer.astro
+src/data/site.yaml ──→ BaseLayout.astro (SEO, structured data)
+src/data/theme.yaml ──→ BaseLayout.astro (CSS custom properties)
 
-src/data/seo.json ──→ src/layouts/BaseLayout.astro
-                           │           │
-                           ↓           ↓
-                     <SEO> tags   StructuredData.astro
+src/data/navigation.yaml ──→ global/Nav.astro ──→ MainNav.astro
+                         ──→ global/Footer.astro ──→ Footer.astro
+
+src/data/banner.yaml ──→ global/Banner.astro
+
+BaseLayout.astro renders:
+  <slot name="banner"> → Banner.astro (default)
+  <slot name="nav">    → Nav.astro (default)
+  <main><slot /></main>
+  <slot name="footer"> → Footer.astro (default)
 ```
-
----
-
-## CloudCannon editing
-
-### Data collection
-
-The `data` collection in `cloudcannon.config.yml` makes all JSON files editable:
-
-```yaml
-data:
-  path: src/data
-  glob:
-    - '**/*.json'
-  icon: database
-  _enabled_editors:
-    - data
-```
-
-Editors see a "Data" section in CloudCannon with entries for `mainNav`, `footer`, and `seo`.
-
-### Structure definitions
-
-CloudCannon uses structure files in `.cloudcannon/structures/` to define the shape of array items:
-
-| Structure file                       | Used for                    |
-| ------------------------------------ | --------------------------- |
-| `navData.cloudcannon.structures.yml` | Navigation items (3 levels) |
-| `links.cloudcannon.structures.yml`   | Footer links                |
-| `socials.cloudcannon.structures.yml` | Social media links          |
-
-These are loaded globally via `_structures_from_glob` in `cloudcannon.config.yml`.
-
-The nav component also defines its own inline structures in `main-nav.cloudcannon.inputs.yml` for the same nav item levels — these provide CloudCannon with field types and comments for the editing UI.
 
 ---
 
 ## Setting up for a new site
 
-### Step 1: Update SEO data
-
-Edit `src/data/seo.json`:
-
-- Set `name` to the site name
-- Set `url` to the production URL
-- Set `description` to the default meta description
-- Set `titleFormat` to include the site name
-- Set `twitterHandle`
-
+### Step 1: Update site metadata
+Edit `src/data/site.yaml` — set name, url, description, titleFormat, twitterHandle.
 Also update `site` in `astro.config.mjs` to match the production URL.
 
-### Step 2: Update navigation
+### Step 2: Update theme
+Edit `src/data/theme.yaml` — set brand colors, fonts, rounding. Also update `site-fonts.mjs` if changing font families.
 
-Edit `src/data/mainNav.json`:
+### Step 3: Update navigation
+Edit `src/data/navigation.yaml` — set logo, primary nav items, CTA, footer config, and socials.
 
-- Replace `logoSource` with the site's logo path (place the SVG in `public/images/`)
-- Set `logoAlt`
-- Replace `navData` with the site's navigation structure
-- Update `buttonSections` (or set to `[]` to remove nav buttons)
+### Step 4: Configure banner
+Edit `src/data/banner.yaml` — set enabled, text, CTA, dismissal behavior.
 
-### Step 3: Update footer
-
-Edit `src/data/footer.json`:
-
-- Replace `logoSource` and `logoAlt`
-- Replace `links` with footer navigation
-- Replace `socials` with actual social media links
-- Update `footerText` with copyright text
-
-### Step 4: Add logo files
-
-Place logo files in `public/images/` for static serving, or in `src/assets/images/` if you want Astro image optimization. The nav and footer reference these via `logoSource`.
+### Step 5: Add logo files
+Place logo files in `public/images/` for static serving, or in `src/assets/images/` for Astro image optimization.

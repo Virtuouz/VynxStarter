@@ -1,0 +1,108 @@
+---
+import { readFileSync } from "fs";
+import yaml from "js-yaml";
+import Heading from "@core-elements/heading/Heading.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import Page from "@layouts/Page.astro";
+import CustomSection from "@page-sections/builders/custom-section/CustomSection.astro";
+import Card from "@wrappers/card/Card.astro";
+import Grid from "@wrappers/grid/Grid.astro";
+import GridItem from "@wrappers/grid/GridItem.astro";
+import { getCollection } from "astro:content";
+
+interface CollectionDef {
+  name: string;
+  slug: string;
+  enabled: boolean;
+  singular_label: string;
+  has_archive: boolean;
+  archive_url?: string;
+  fields: { key: string; type: string; required?: boolean }[];
+}
+
+interface CollectionsConfig {
+  collections: CollectionDef[];
+}
+
+export async function getStaticPaths() {
+  const raw = readFileSync("./src/data/collections.yaml", "utf-8");
+  const config = yaml.load(raw) as CollectionsConfig;
+
+  if (!config?.collections?.length) return [];
+
+  const paths = [];
+
+  for (const col of config.collections) {
+    if (!col.enabled || !col.has_archive) continue;
+
+    let items: any[] = [];
+    try {
+      items = await getCollection(col.slug);
+    } catch {
+      // Collection may be empty or not yet created
+    }
+
+    paths.push({
+      params: { collection: col.slug },
+      props: { collectionDef: col, items },
+    });
+  }
+
+  return paths;
+}
+
+interface Props {
+  collectionDef: CollectionDef;
+  items: any[];
+}
+
+const { collectionDef, items } = Astro.props;
+---
+
+<Page title={collectionDef.name}>
+  <CustomSection
+    maxContentWidth="2xl"
+    paddingHorizontal="lg"
+    paddingVertical="4xl"
+    colorScheme="inherit"
+    backgroundColor="base"
+  >
+    <Heading level="h1" size="2xl" style="margin-bottom: var(--spacing-xl);">
+      {collectionDef.name}
+    </Heading>
+
+    {
+      items.length > 0 ? (
+        <Grid gap="lg" layout="start" minItemWidth="320" maxItemWidth="400">
+          {items.map((item: any) => {
+            const slug = item.id?.replace(/\.md$/, "") || item.slug;
+            return (
+              <GridItem>
+                <Card
+                  link={`/${collectionDef.slug}/${slug}`}
+                  rounded={true}
+                  border={true}
+                  paddingVertical="lg"
+                  paddingHorizontal="lg"
+                >
+                  <Heading level="h3" size="md" style="margin-bottom: var(--spacing-sm);">
+                    {item.data.title || slug}
+                  </Heading>
+                  {item.data.description && (
+                    <SimpleText size="sm" style="color: var(--color-text-muted); margin-top: 0;">
+                      {item.data.description}
+                    </SimpleText>
+                  )}
+                </Card>
+              </GridItem>
+            );
+          })}
+        </Grid>
+      ) : (
+        <SimpleText alignX="center" style="margin-top: var(--spacing-2xl);">
+          No {collectionDef.name.toLowerCase()} yet. Check back soon!
+        </SimpleText>
+      )
+    }
+  </CustomSection>
+</Page>

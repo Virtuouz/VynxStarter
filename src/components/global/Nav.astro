@@ -1,0 +1,32 @@
+---
+import MainNav from "@components/navigation/main-nav/MainNav.astro";
+import navigation from "@data/navigation.yaml";
+
+const navData = navigation.primary.map((item: { label: string; url: string }) => ({
+  name: item.label,
+  path: item.url,
+  children: [],
+}));
+
+const buttonSections = navigation.cta
+  ? [
+      {
+        _component: "building-blocks/core-elements/button",
+        text: navigation.cta.label,
+        hideText: true,
+        link: navigation.cta.url,
+        iconName: navigation.cta.icon || "",
+        iconPosition: "before",
+        variant: "ghost",
+        size: "lg",
+      },
+    ]
+  : [];
+---
+
+<MainNav
+  logoSource={navigation.logo.source}
+  logoAlt={navigation.logo.alt}
+  navData={navData}
+  buttonSections={buttonSections}
+/>

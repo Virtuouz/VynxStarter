@@ -1,0 +1,122 @@
+---
+import banner from "@data/banner.yaml";
+
+const { enabled, text, cta_text, cta_url, dismissible, reappear_after } = banner;
+
+const reappearMs: Record<string, number> = {
+  "1 day": 86400000,
+  "1 week": 604800000,
+  "1 month": 2592000000,
+};
+
+const reappearValue = reappear_after && reappearMs[reappear_after] ? reappearMs[reappear_after] : 0;
+---
+
+{
+  enabled && (
+    <div
+      class="site-banner"
+      id="site-banner"
+      data-dismissible={dismissible ? "true" : "false"}
+      data-reappear={reappearValue}
+    >
+      <div class="site-banner-content">
+        <span class="site-banner-text">{text}</span>
+        {cta_text && cta_url && (
+          <a href={cta_url} class="site-banner-cta">
+            {cta_text}
+          </a>
+        )}
+      </div>
+      {dismissible && (
+        <button
+          class="site-banner-dismiss"
+          aria-label="Dismiss banner"
+          type="button"
+        >
+          &times;
+        </button>
+      )}
+    </div>
+  )
+}
+
+{
+  enabled && (
+    <script is:inline>
+      (function () {
+        var banner = document.getElementById("site-banner");
+        if (!banner) return;
+
+        var dismissible = banner.dataset.dismissible === "true";
+        var reappearMs = parseInt(banner.dataset.reappear, 10) || 0;
+        var storageKey = "site-banner-dismissed";
+
+        if (dismissible) {
+          var stored = localStorage.getItem(storageKey);
+          if (stored) {
+            if (reappearMs === 0) {
+              banner.style.display = "none";
+              return;
+            }
+            var dismissedAt = parseInt(stored, 10);
+            if (Date.now() - dismissedAt < reappearMs) {
+              banner.style.display = "none";
+              return;
+            }
+            localStorage.removeItem(storageKey);
+          }
+
+          var btn = banner.querySelector(".site-banner-dismiss");
+          if (btn) {
+            btn.addEventListener("click", function () {
+              banner.style.display = "none";
+              localStorage.setItem(
+                storageKey,
+                reappearMs > 0 ? String(Date.now()) : "1"
+              );
+            });
+          }
+        }
+      })();
+    </script>
+  )
+}
+
+<style>
+  @layer components {
+    .site-banner {
+      align-items: center;
+      background-color: var(--color-bg-brand);
+      color: var(--color-text-on-brand);
+      display: flex;
+      font-size: var(--font-size-sm);
+      gap: var(--spacing-sm);
+      justify-content: center;
+      padding: var(--spacing-xs) var(--spacing-md);
+    }
+
+    .site-banner-content {
+      align-items: center;
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+
+    .site-banner-cta {
+      color: inherit;
+      font-weight: var(--font-weight-semibold);
+      text-decoration: underline;
+      white-space: nowrap;
+    }
+
+    .site-banner-dismiss {
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      font-size: 1.25em;
+      line-height: 1;
+      padding: 0 var(--spacing-xs);
+    }
+  }
+</style>

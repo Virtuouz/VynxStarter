@@ -1,9 +1,5 @@
 ---
-import Footer from "@components/navigation/footer/Footer.astro";
-import MainNavigation from "@components/navigation/main-nav/MainNav.astro";
 import MainComponent from "@components/utils/MainComponent.astro";
-import footerData from "@data/footer.json";
-import mainNavData from "@data/mainNav.json";
 import Layout from "@layouts/BaseLayout.astro";
 
 import type { ContentBlock } from "../types";
@@ -22,8 +18,6 @@ type Props = {
   keywords?: string[];
   image?: string;
   canonical?: string;
-  mainNav?: Record<string, unknown>;
-  footer?: Record<string, unknown>;
 };
 
 const {
@@ -33,8 +27,6 @@ const {
   keywords: keywordsProp,
   image: imageProp,
   canonical: canonicalProp,
-  mainNav = mainNavData,
-  footer = footerData,
 } = Astro.props as Props;
 
 const title = frontmatter?.title ?? titleProp ?? "";
@@ -52,21 +44,16 @@ const sections = frontmatter?.pageSections ?? [];
   image={image}
   canonical={canonical}
 >
-  <MainNavigation {...mainNav} />
-
-  <main>
-    {
-      sections.length > 0 && (
-        <div
-          data-editable="component"
-          data-component="utils/main-component"
-          data-prop-sections="pageSections"
-        >
-          <MainComponent sections={sections} />
-        </div>
-      )
-    }
-    <slot />
-  </main>
-  <Footer {...footer} />
+  {
+    sections.length > 0 && (
+      <div
+        data-editable="component"
+        data-component="utils/main-component"
+        data-prop-sections="pageSections"
+      >
+        <MainComponent sections={sections} />
+      </div>
+    )
+  }
+  <slot />
 </Layout>

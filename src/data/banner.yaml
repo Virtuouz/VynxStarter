@@ -1,0 +1,6 @@
+enabled: false
+text: ""
+cta_text: ""
+cta_url: ""
+dismissible: true
+reappear_after: "1 week"

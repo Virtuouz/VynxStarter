@@ -1,6 +1,6 @@
 ---
 import FooterComponent from "@components/navigation/footer/Footer.astro";
-import navigation from "@data/navigation.yaml";
+import navigation from "@data/navigation.json";
 
 const links = navigation.footer.use_primary
   ? navigation.primary.map((item: { label: string; url: string }) => ({

@@ -1,7 +1,6 @@
 import { readFileSync } from "fs";
 import { glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
-import yaml from "js-yaml";
 
 const contentBlockSchema = z.object({ _component: z.string() }).passthrough();
 
@@ -102,7 +101,7 @@ const blogCollection = defineCollection({
   schema: blogPostSchema,
 });
 
-// Dynamic generic collections from collections.yaml
+// Dynamic generic collections from collections.json
 interface CollectionField {
   key: string;
   type: string;
@@ -147,8 +146,8 @@ function loadGenericCollections(): Record<string, ReturnType<typeof defineCollec
   const result: Record<string, ReturnType<typeof defineCollection>> = {};
 
   try {
-    const raw = readFileSync("./src/data/collections.yaml", "utf-8");
-    const config = yaml.load(raw) as CollectionsConfig;
+    const raw = readFileSync("./src/data/collections.json", "utf-8");
+    const config = JSON.parse(raw) as CollectionsConfig;
 
     if (!config?.collections?.length) return result;
 
@@ -161,7 +160,7 @@ function loadGenericCollections(): Record<string, ReturnType<typeof defineCollec
       });
     }
   } catch {
-    // collections.yaml doesn't exist or is empty — no generic collections
+    // collections.json doesn't exist or is empty — no generic collections
   }
 
   return result;

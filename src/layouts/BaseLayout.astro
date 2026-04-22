@@ -3,8 +3,8 @@ import Banner from "@components/global/Banner.astro";
 import Nav from "@components/global/Nav.astro";
 import FooterGlobal from "@components/global/Footer.astro";
 import StructuredData from "@components/utils/StructuredData.astro";
-import siteData from "@data/site.yaml";
-import theme from "@data/theme.yaml";
+import siteData from "@data/site.json";
+import theme from "@data/theme.json";
 import "@styles/style.css";
 import SiteFonts from "@layouts/SiteFonts.astro";
 import { SEO } from "astro-seo";
@@ -22,7 +22,7 @@ const formattedTitle = siteData.titleFormat.replace("{title}", props.title);
 const pageDescription = props.description || siteData.description;
 const pageImage = props.image || siteData.logoSource;
 
-// Build CSS for color groups from theme.yaml
+// Build CSS for color groups from theme.json
 const colorVarMap: Record<string, string> = {
   brand: "--color-brand",
   brand_muted: "--color-brand-muted",

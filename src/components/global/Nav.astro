@@ -1,6 +1,6 @@
 ---
 import MainNav from "@components/navigation/main-nav/MainNav.astro";
-import navigation from "@data/navigation.yaml";
+import navigation from "@data/navigation.json";
 
 const navData = navigation.primary.map((item: { label: string; url: string }) => ({
   name: item.label,

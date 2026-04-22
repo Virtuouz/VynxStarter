@@ -1,0 +1,26 @@
+{
+  "logo": {
+    "source": "/images/logo.svg",
+    "alt": "Logo"
+  },
+  "primary": [
+    { "label": "Home", "url": "/" },
+    { "label": "Why", "url": "/why/" },
+    { "label": "Blog", "url": "/blog/" }
+  ],
+  "cta": {
+    "label": "Search",
+    "url": "/search/",
+    "icon": "magnifying-glass"
+  },
+  "footer": {
+    "use_primary": true,
+    "columns": [],
+    "socials": [
+      { "icon": "social/github", "link": "https://github.com" },
+      { "icon": "social/x", "link": "https://twitter.com" },
+      { "icon": "social/linkedin", "link": "https://linkedin.com" }
+    ],
+    "text": "© 2026 All rights reserved."
+  }
+}

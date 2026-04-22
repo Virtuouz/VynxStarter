@@ -1,6 +1,5 @@
 ---
 import { readFileSync } from "fs";
-import yaml from "js-yaml";
 import CollectionItem from "@layouts/CollectionItem.astro";
 import { getCollection, render } from "astro:content";
 
@@ -19,8 +18,8 @@ interface CollectionsConfig {
 }
 
 export async function getStaticPaths() {
-  const raw = readFileSync("./src/data/collections.yaml", "utf-8");
-  const config = yaml.load(raw) as CollectionsConfig;
+  const raw = readFileSync("./src/data/collections.json", "utf-8");
+  const config = JSON.parse(raw) as CollectionsConfig;
 
   if (!config?.collections?.length) return [];
 

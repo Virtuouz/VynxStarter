@@ -12,6 +12,7 @@ Project skills live in `.claude/skills/`. They are invoked automatically when th
 | `editable-regions`         | Wiring `data-prop` / `data-children-prop` bindings on components   |
 | `migrate-existing-site`    | Porting an existing site into this starter                         |
 | `page-content-authoring`   | Assembling pages from existing components                          |
+| `page-design`              | Designing a new page from scratch before picking or building sections |
 | `screenshot-to-component`  | Turning a screenshot into an Astro page-section component          |
 | `site-data-navigation`     | Editing `src/data/*.json` (site, navigation, theme, banner, etc.)  |
 | `theming`                  | Changing brand colors, fonts, rounding, or design tokens           |

@@ -7,16 +7,24 @@ export interface Props {
 }
 
 export async function getStaticPaths() {
+  const { slugifyLabel } = await import("@components/utils/slugify");
   const pages = await getCollection("pages");
 
   return pages
-    .filter((page) => {
-      const slug = page.id.replace(/index$/, "");
-
-      return slug !== "blog";
-    })
+    .filter((page) => page.id !== "blog")
     .map((page) => {
-      const slug = page.id.replace(/index$/, "");
+      const segments = page.id.split("/");
+      const last = segments[segments.length - 1];
+      const folder = segments.slice(0, -1).join("/");
+
+      let slug: string;
+      if (last === "index") {
+        slug = folder;
+      } else {
+        const raw = page.data.pageLink?.trim() || page.data.title;
+        const leaf = slugifyLabel(raw);
+        slug = folder ? `${folder}/${leaf}` : leaf;
+      }
 
       if (slug.length === 0) return { params: { slug: undefined }, props: { page } };
       return { params: { slug }, props: { page } };

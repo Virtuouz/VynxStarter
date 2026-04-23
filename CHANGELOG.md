@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+- `pageLink` frontmatter field on the pages schema for overriding a page's URL slug.
+
+### Changed
+
+- Page URLs now default to a slugified version of the page `title` (or `pageLink` when set) instead of the source filename. Folder names are still retained as URL segments, and `index.md` still represents the folder root.
+
 ## [1.0.1] - 2026-03-19
 
 ### Added

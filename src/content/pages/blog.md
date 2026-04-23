@@ -1,6 +1,7 @@
 ---
 _schema: default
 title: Blog
+pageLink: ''
 description: >-
   Read our latest articles and insights on web development, design, and
   technology.

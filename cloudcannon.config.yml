@@ -3,7 +3,7 @@ collections_config:
     path: src/content/pages
     glob:
       - "**/*.md"
-    url: /[full_slug]/
+    url: /[relative_base_path]/{pageLink|default=title|lowercase|slugify}/ 
     icon: web
     _enabled_editors:
       - visual
@@ -23,6 +23,9 @@ collections_config:
       title:
         type: text
         comment: Controls the metadata title for the page.
+      pageLink:
+        type: text
+        comment: Optional. Overrides the URL slug for this page. Leave empty to use a slugified version of the title.
   blog:
     path: src/content/blog
     glob:

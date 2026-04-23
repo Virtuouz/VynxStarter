@@ -1,0 +1,304 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import Text from "@core-elements/text/Text.astro";
+import ButtonGroup from "@wrappers/button-group/ButtonGroup.astro";
+
+type LogoItem = {
+  source?: string;
+  alt?: string;
+};
+
+const {
+  eyebrow = "",
+  heading = "",
+  subtext = "",
+  buttonSections = [],
+  trustedByLabel = "",
+  logos = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "5xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["hero-agency", className]}
+  maxContentWidth="3xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <div class="hero-agency__backdrop" aria-hidden="true">
+    <div class="hero-agency__grid"></div>
+    <div class="hero-agency__orb hero-agency__orb--one"></div>
+    <div class="hero-agency__orb hero-agency__orb--two"></div>
+  </div>
+
+  <div class="hero-agency__inner">
+    <SimpleText
+      alignX="center"
+      class="hero-agency__eyebrow"
+      data-prop="eyebrow"
+      text={eyebrow}
+    />
+    <Heading
+      level="h1"
+      size="3xl"
+      alignX="center"
+      class="hero-agency__heading"
+      data-prop="heading"
+    >
+      {heading}
+    </Heading>
+    <Text
+      alignX="center"
+      class="hero-agency__subtext"
+      data-prop="subtext"
+      text={subtext}
+    />
+    <ButtonGroup
+      class="hero-agency__buttons"
+      buttonSections={buttonSections}
+      alignX="center"
+      data-children-prop="buttonSections"
+    />
+
+    {
+      (trustedByLabel || (logos && logos.length > 0)) && (
+        <div class="hero-agency__trust">
+          {trustedByLabel && (
+            <SimpleText
+              alignX="center"
+              class="hero-agency__trust-label"
+              data-prop="trustedByLabel"
+              text={trustedByLabel}
+            />
+          )}
+          {logos && logos.length > 0 && (
+            <div
+              class="hero-agency__logos"
+              data-editable="array"
+              data-prop="logos"
+            >
+              {logos.map((logo: LogoItem) => (
+                <div
+                  class="hero-agency__logo"
+                  data-id="page-sections/heroes/hero-agency/hero-agency-logo"
+                  data-editable="array-item"
+                >
+                  <Image
+                    source={logo.source}
+                    alt={logo.alt}
+                    class="hero-agency__logo-image"
+                    data-prop-src="source"
+                    data-prop-alt="alt"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )
+    }
+  </div>
+</CustomSection>
+
+<style>
+  @layer page-sections {
+    .hero-agency {
+      position: relative;
+      overflow: hidden;
+
+      :global(.hero-agency__eyebrow) {
+        display: flex;
+        justify-content: center;
+        margin-top: 0;
+      }
+
+      :global(.hero-agency__eyebrow .simple-text-content) {
+        background: var(--color-bg-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-full);
+        color: var(--color-text-muted);
+        display: inline-block;
+        font-family: "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
+        font-size: var(--font-size-xs);
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        padding: 0.35em 0.9em;
+        text-transform: uppercase;
+      }
+
+      :global(.hero-agency__eyebrow .simple-text-content::before) {
+        color: var(--color-brand);
+        content: "// ";
+      }
+
+      :global(.hero-agency__heading) {
+        margin-top: var(--spacing-xl);
+      }
+
+      :global(.hero-agency__heading .heading-inner) {
+        background: linear-gradient(
+          180deg,
+          var(--color-text-strong) 0%,
+          var(--color-text) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+      }
+
+      :global(.hero-agency__heading em) {
+        background: linear-gradient(
+          135deg,
+          var(--color-brand) 0%,
+          var(--color-brand-subtle) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-style: normal;
+      }
+
+      :global(.hero-agency__subtext) {
+        margin-inline: auto;
+        max-width: 46rem;
+      }
+
+      :global(.hero-agency__subtext p) {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-lg);
+        line-height: 1.6;
+      }
+
+      :global(.hero-agency__buttons) {
+        margin-top: var(--spacing-2xl);
+      }
+
+      .hero-agency__trust {
+        align-items: center;
+        border-top: 1px solid var(--color-border);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+        margin-top: var(--spacing-4xl);
+        padding-top: var(--spacing-2xl);
+      }
+
+      :global(.hero-agency__trust-label) {
+        margin-top: 0;
+      }
+
+      :global(.hero-agency__trust-label .simple-text-content) {
+        color: var(--color-text-muted);
+        font-family: "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
+        font-size: var(--font-size-xs);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .hero-agency__logos {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-2xl);
+        justify-content: center;
+      }
+
+      .hero-agency__logo {
+        filter: brightness(0) invert(1);
+        flex: 0 0 auto;
+        opacity: 0.55;
+        transition: opacity 0.2s ease;
+      }
+
+      .hero-agency__logo:hover {
+        opacity: 0.9;
+      }
+
+      :global(.hero-agency__logo-image) {
+        margin-top: 0;
+      }
+
+      :global(.hero-agency__logo-image img),
+      :global(.hero-agency__logo-image picture) {
+        height: 28px;
+        max-width: 140px;
+        object-fit: contain;
+        width: auto;
+      }
+
+      .hero-agency__backdrop {
+        inset: 0;
+        pointer-events: none;
+        position: absolute;
+        z-index: 0;
+      }
+
+      .hero-agency__grid {
+        background-image:
+          linear-gradient(
+            to right,
+            color-mix(in srgb, var(--color-border) 50%, transparent) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--color-border) 50%, transparent) 1px,
+            transparent 1px
+          );
+        background-size: 48px 48px;
+        inset: 0;
+        mask-image: radial-gradient(
+          ellipse 80% 60% at 50% 40%,
+          #000 0%,
+          transparent 75%
+        );
+        opacity: 0.5;
+        position: absolute;
+      }
+
+      .hero-agency__orb {
+        border-radius: 50%;
+        filter: blur(100px);
+        pointer-events: none;
+        position: absolute;
+      }
+
+      .hero-agency__orb--one {
+        background: color-mix(in srgb, var(--color-brand) 30%, transparent);
+        height: 400px;
+        left: 50%;
+        top: -100px;
+        transform: translateX(-50%);
+        width: 600px;
+      }
+
+      .hero-agency__orb--two {
+        background: color-mix(in srgb, var(--color-brand-muted) 20%, transparent);
+        bottom: -150px;
+        height: 300px;
+        left: 20%;
+        width: 400px;
+      }
+
+      .hero-agency__inner {
+        position: relative;
+        z-index: 1;
+      }
+    }
+  }
+</style>

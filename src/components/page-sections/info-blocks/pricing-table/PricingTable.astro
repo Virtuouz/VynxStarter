@@ -1,0 +1,124 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import Text from "@core-elements/text/Text.astro";
+import PricingTier from "./PricingTier.astro";
+
+type TierProps = Record<string, unknown>;
+
+const {
+  eyebrow = "",
+  heading = "",
+  subtext = "",
+  tiers = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "4xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["pricing-table", className]}
+  maxContentWidth="3xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <SimpleText
+    alignX="center"
+    class="pricing-table__eyebrow"
+    data-prop="eyebrow"
+    text={eyebrow}
+  />
+  <Heading
+    level="h2"
+    size="xl"
+    alignX="center"
+    class="pricing-table__heading"
+    data-prop="heading"
+  >
+    {heading}
+  </Heading>
+  <Text
+    alignX="center"
+    class="pricing-table__subtext"
+    data-prop="subtext"
+    text={subtext}
+  />
+
+  <div
+    class="pricing-table__grid"
+    data-editable="array"
+    data-prop="tiers"
+  >
+    {
+      tiers.map((tier: TierProps) => (
+        <PricingTier
+          data-id="page-sections/info-blocks/pricing-table/pricing-tier"
+          data-editable="array-item"
+          {...tier}
+        />
+      ))
+    }
+  </div>
+</CustomSection>
+
+<style>
+  @layer page-sections {
+    .pricing-table {
+      :global(.pricing-table__eyebrow) {
+        display: flex;
+        justify-content: center;
+        margin-top: 0;
+      }
+
+      :global(.pricing-table__eyebrow .simple-text-content) {
+        background: var(--color-bg-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-full);
+        color: var(--color-text-muted);
+        display: inline-block;
+        font-family: "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
+        font-size: var(--font-size-xs);
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        padding: 0.35em 0.9em;
+        text-transform: uppercase;
+      }
+
+      :global(.pricing-table__eyebrow .simple-text-content::before) {
+        color: var(--color-brand);
+        content: "// ";
+      }
+
+      :global(.pricing-table__heading) {
+        letter-spacing: -0.02em;
+        margin-top: var(--spacing-lg);
+      }
+
+      :global(.pricing-table__subtext) {
+        margin-inline: auto;
+        max-width: 42rem;
+      }
+
+      :global(.pricing-table__subtext p) {
+        color: var(--color-text-muted);
+      }
+
+      .pricing-table__grid {
+        display: grid;
+        gap: var(--spacing-lg);
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        margin-top: var(--spacing-2xl);
+      }
+    }
+  }
+</style>

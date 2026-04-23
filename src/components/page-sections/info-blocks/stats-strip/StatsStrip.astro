@@ -1,0 +1,115 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+
+type StatItem = {
+  value?: string;
+  label?: string;
+};
+
+const {
+  stats = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "2xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["stats-strip", className]}
+  maxContentWidth="3xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <ul
+    class="stats-strip__list"
+    data-editable="array"
+    data-prop="stats"
+  >
+    {
+      stats.map((stat: StatItem) => (
+        <li
+          class="stats-strip__item"
+          data-id="page-sections/info-blocks/stats-strip/stats-strip-item"
+          data-editable="array-item"
+        >
+          <div
+            class="stats-strip__value"
+            data-editable="text"
+            data-prop="value"
+          >
+            {stat.value}
+          </div>
+          <div
+            class="stats-strip__label"
+            data-editable="text"
+            data-prop="label"
+          >
+            {stat.label}
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</CustomSection>
+
+<style>
+  @layer page-sections {
+    .stats-strip {
+      .stats-strip__list {
+        border-bottom: 1px solid var(--color-border);
+        border-top: 1px solid var(--color-border);
+        display: grid;
+        gap: 1px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        position: relative;
+      }
+
+      .stats-strip__list::before {
+        background: var(--color-border);
+        content: "";
+        inset: 0;
+        pointer-events: none;
+        position: absolute;
+      }
+
+      .stats-strip__item {
+        background: var(--color-bg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-xl) var(--spacing-lg);
+        position: relative;
+        text-align: center;
+        z-index: 1;
+      }
+
+      .stats-strip__value {
+        color: var(--color-text-strong);
+        font-family: var(--font-heading);
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+
+      .stats-strip__label {
+        color: var(--color-text-muted);
+        font-family: "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
+        font-size: var(--font-size-xs);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+    }
+  }
+</style>

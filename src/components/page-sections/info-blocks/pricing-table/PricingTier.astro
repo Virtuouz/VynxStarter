@@ -1,0 +1,238 @@
+---
+import Heading from "@core-elements/heading/Heading.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import Text from "@core-elements/text/Text.astro";
+import ButtonGroup from "@wrappers/button-group/ButtonGroup.astro";
+import Icon from "@core-elements/icon/Icon.astro";
+
+type FeatureItem = { text?: string };
+
+const {
+  name = "",
+  price = "",
+  priceSuffix = "",
+  description = "",
+  features = [],
+  buttonSections = [],
+  featured = false,
+  featuredLabel = "Most popular",
+  class: className,
+  useDefaultEditableBinding: _useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<article
+  class:list={["pricing-tier", featured && "pricing-tier--featured", className]}
+  {...htmlAttributes}
+>
+  {
+    featured && (
+      <div class="pricing-tier__badge">
+        <span
+          data-editable="text"
+          data-prop="featuredLabel"
+        >
+          {featuredLabel}
+        </span>
+      </div>
+    )
+  }
+
+  <SimpleText
+    class="pricing-tier__name"
+    data-prop="name"
+    text={name}
+  />
+
+  <div class="pricing-tier__price-row">
+    <span
+      class="pricing-tier__price"
+      data-editable="text"
+      data-prop="price"
+    >
+      {price}
+    </span>
+    {
+      priceSuffix && (
+        <span
+          class="pricing-tier__price-suffix"
+          data-editable="text"
+          data-prop="priceSuffix"
+        >
+          {priceSuffix}
+        </span>
+      )
+    }
+  </div>
+
+  <Text
+    class="pricing-tier__description"
+    data-prop="description"
+    text={description}
+  />
+
+  <ul
+    class="pricing-tier__features"
+    data-editable="array"
+    data-prop="features"
+  >
+    {
+      features.map((feature: FeatureItem) => (
+        <li
+          class="pricing-tier__feature"
+          data-id="page-sections/info-blocks/pricing-table/pricing-feature"
+          data-editable="array-item"
+        >
+          <Icon
+            class="pricing-tier__feature-icon"
+            name="check"
+            size="sm"
+          />
+          <span
+            data-editable="text"
+            data-prop="text"
+          >
+            {feature.text}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <ButtonGroup
+    class="pricing-tier__buttons"
+    buttonSections={buttonSections}
+    data-children-prop="buttonSections"
+  />
+</article>
+
+<style>
+  @layer page-sections {
+    .pricing-tier {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      padding: var(--spacing-xl);
+      position: relative;
+      transition: border-color 0.2s ease;
+    }
+
+    .pricing-tier:hover {
+      border-color: var(--color-border-strong);
+    }
+
+    .pricing-tier--featured {
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-brand) 8%, var(--color-bg)) 0%,
+        var(--color-bg) 60%
+      );
+      border-color: color-mix(in srgb, var(--color-brand) 50%, var(--color-border));
+      box-shadow: 0 20px 60px -20px color-mix(in srgb, var(--color-brand) 30%, transparent);
+    }
+
+    .pricing-tier__badge {
+      background: var(--color-brand);
+      border-radius: var(--radius-full);
+      color: var(--color-text-on-brand);
+      font-family: "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      left: 50%;
+      letter-spacing: 0.08em;
+      padding: 0.35em 0.9em;
+      position: absolute;
+      text-transform: uppercase;
+      top: 0;
+      transform: translate(-50%, -50%);
+    }
+
+    :global(.pricing-tier__name) {
+      margin-top: 0;
+    }
+
+    :global(.pricing-tier__name .simple-text-content) {
+      color: var(--color-text-muted);
+      font-family: "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .pricing-tier__price-row {
+      align-items: baseline;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+    }
+
+    .pricing-tier__price {
+      color: var(--color-text-strong);
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .pricing-tier__price-suffix {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-sm);
+    }
+
+    :global(.pricing-tier__description) {
+      margin-top: 0;
+    }
+
+    :global(.pricing-tier__description p) {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-sm);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .pricing-tier__features {
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: var(--spacing-sm);
+      list-style: none;
+      margin: var(--spacing-md) 0 0;
+      padding: var(--spacing-md) 0 0;
+    }
+
+    .pricing-tier__feature {
+      align-items: flex-start;
+      color: var(--color-text);
+      display: flex;
+      font-size: var(--font-size-sm);
+      gap: var(--spacing-sm);
+      line-height: 1.5;
+    }
+
+    :global(.pricing-tier__feature-icon) {
+      color: var(--color-brand);
+      flex-shrink: 0;
+      margin-top: 0.2em;
+    }
+
+    :global(.pricing-tier__buttons) {
+      margin-top: auto;
+    }
+
+    :global(.pricing-tier__buttons .button-group__items) {
+      justify-content: stretch;
+    }
+
+    :global(.pricing-tier__buttons .button) {
+      flex: 1;
+    }
+  }
+</style>

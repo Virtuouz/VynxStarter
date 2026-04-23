@@ -1,0 +1,99 @@
+label: Pricing Table
+icon: payments
+description: SaaS-style pricing cards with tier name, price, feature checklist, and one optional featured card.
+value:
+  _component: page-sections/info-blocks/pricing-table
+  eyebrow: PRICING
+  heading: Simple, transparent pricing
+  subtext: No hidden fees. No long-term contracts.
+  tiers: []
+  colorScheme: inherit
+  backgroundColor: base
+preview:
+  text:
+    - Pricing Table
+  subtext:
+    - key: heading
+  icon: payments
+picker_preview:
+  text: Pricing Table
+  subtext: SaaS-style pricing cards with feature checklists.
+_inputs_from_glob:
+  - /src/components/page-sections/info-blocks/pricing-table/pricing-table.cloudcannon.inputs.yml
+_structures:
+  pricingTableTiers:
+    values:
+      - label: Tier
+        icon: payments
+        value:
+          name: Tier name
+          price: "$0"
+          priceSuffix: /mo
+          description: What this tier is for.
+          features: []
+          buttonSections:
+            - _component: building-blocks/core-elements/button
+              text: Get started
+              hideText: false
+              link: /contact/
+              iconName: ""
+              iconPosition: before
+              variant: secondary
+              size: md
+          featured: false
+          featuredLabel: Most popular
+        preview:
+          text:
+            - key: name
+            - Tier
+          subtext:
+            - key: price
+        _inputs:
+          name:
+            type: text
+            comment: Short tier name (e.g., "Launchpad", "Growth", "Custom").
+          price:
+            type: text
+            comment: Price as displayed (e.g., "$499", "$1,249", "From $3,000").
+          priceSuffix:
+            type: text
+            comment: What follows the price (e.g., "upfront", "/mo", "setup").
+          description:
+            type: markdown
+            comment: One-line description of who this tier is for.
+            options:
+              blockquote: false
+              bold: true
+              format:
+              italic: true
+              link: false
+          features:
+            type: array
+            comment: Feature checklist shown as bulleted list with checkmarks.
+            options:
+              structures: _structures.pricingFeatures
+          buttonSections:
+            type: array
+            comment: Tier CTA button.
+            options:
+              structures: _structures.buttonSections
+          featured:
+            type: switch
+            comment: Highlight this tier as the featured / recommended option.
+          featuredLabel:
+            type: text
+            comment: Badge label shown on featured tier.
+  pricingFeatures:
+    values:
+      - label: Feature
+        icon: check
+        value:
+          text: Feature description
+        preview:
+          text:
+            - key: text
+            - Feature
+        _inputs:
+          text:
+            type: text
+            comment: Feature description.

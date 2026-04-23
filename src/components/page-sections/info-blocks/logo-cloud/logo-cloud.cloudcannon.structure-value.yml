@@ -1,0 +1,42 @@
+label: Logo Cloud
+icon: image
+description: Horizontal grid of client / partner logos for social proof.
+value:
+  _component: page-sections/info-blocks/logo-cloud
+  eyebrow: Trusted by Idaho service businesses
+  heading: ""
+  logos: []
+  colorScheme: inherit
+  backgroundColor: base
+preview:
+  text:
+    - Logo Cloud
+  subtext:
+    - key: eyebrow
+  icon: image
+picker_preview:
+  text: Logo Cloud
+  subtext: Client logo grid for social proof.
+_inputs_from_glob:
+  - /src/components/page-sections/info-blocks/logo-cloud/logo-cloud.cloudcannon.inputs.yml
+_structures:
+  logoCloudItems:
+    values:
+      - label: Logo
+        icon: image
+        value:
+          source: ""
+          alt: ""
+        preview:
+          text:
+            - key: alt
+            - Logo
+          image:
+            - key: source
+        _inputs:
+          source:
+            type: image
+            comment: Logo image (SVG recommended).
+          alt:
+            type: text
+            comment: Alt text / client name.

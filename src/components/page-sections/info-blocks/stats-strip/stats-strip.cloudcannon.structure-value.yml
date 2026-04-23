@@ -1,0 +1,44 @@
+label: Stats Strip
+icon: numbers
+description: Horizontal row of big-number trust anchors (e.g., 7 DAYS · $499 · 24/7/365).
+value:
+  _component: page-sections/info-blocks/stats-strip
+  stats:
+    - value: "7 DAYS"
+      label: To launch
+    - value: "$499"
+      label: Starting at
+    - value: "24/7"
+      label: Always on
+  colorScheme: inherit
+  backgroundColor: base
+preview:
+  text:
+    - Stats Strip
+  subtext: Big-number trust anchors.
+  icon: numbers
+picker_preview:
+  text: Stats Strip
+  subtext: Row of big-number stats (7 DAYS · $499 · 24/7).
+_inputs_from_glob:
+  - /src/components/page-sections/info-blocks/stats-strip/stats-strip.cloudcannon.inputs.yml
+_structures:
+  statsStripItems:
+    values:
+      - label: Stat
+        icon: numbers
+        value:
+          value: "100%"
+          label: Label
+        preview:
+          text:
+            - key: value
+          subtext:
+            - key: label
+        _inputs:
+          value:
+            type: text
+            comment: The big number / headline value (e.g., "7 DAYS", "$499", "24/7").
+          label:
+            type: text
+            comment: Short label under the number.

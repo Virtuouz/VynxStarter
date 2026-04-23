@@ -1,8 +1,8 @@
 {
-  "enabled": false,
-  "text": "",
-  "cta_text": "",
-  "cta_url": "",
+  "enabled": true,
+  "text": "We are looking for Founders for our Scale plan. Up to 83% discount.",
+  "cta_text": "Learn more here",
+  "cta_url": "/blog/2025-12-08-founders-rate-scale-plan/",
   "dismissible": true,
   "reappear_after": "1 week"
 }

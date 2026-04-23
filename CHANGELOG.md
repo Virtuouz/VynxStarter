@@ -10,10 +10,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - `pageLink` frontmatter field on the pages schema for overriding a page's URL slug.
 - `draft` frontmatter field on the pages schema. Pages with `draft: true` are skipped at build time.
+- Vynxlabs content migration on the `vynx` branch: home, about-us, contact, three service pages (`/services/launch-pad-website/`, `/services/operations-hub/`, `/services/ai-employee/`), and two blog posts. Brand theme, fonts (Oswald/Inter), logo, site metadata, navigation, banner, and source images migrated from vynxlabs.com.
+- `heroes/hero-agency` page section: modern agency hero with monospace eyebrow pill, gradient-accent headline (wrap a word in `*italics*` to render it as a gradient), optional trusted-by logo row, and dot-grid + gradient-orb backdrop.
+- `builders/process-timeline` page section: vertical numbered (01 / 02 / 03…) timeline with alternating content and framed media per phase.
+- `info-blocks/stats-strip` page section: horizontal row of big-number trust anchors.
+- `info-blocks/logo-cloud` page section: clean grid of client / partner logos for social proof.
+- `info-blocks/pricing-table` page section: SaaS-style pricing cards with tier name, price, feature checklist, and one optional featured card.
+- `people/testimonial-grid` page section: responsive grid of testimonial cards (quote, author photo, name, role) — replaces stacked full-width testimonials.
+- `light` and `dark` color groups in `src/data/theme.json` alongside the primary palette, usable via `colorScheme: light` / `colorScheme: dark` on any section.
 
 ### Changed
 
 - Page URLs now default to a slugified version of the page `title` (or `pageLink` when set) instead of the source filename. Folder names are still retained as URL segments, and `index.md` still represents the folder root.
+- Primary theme palette in `src/data/theme.json` retuned to a dark-first, modern-agency aesthetic (near-black deep-blue base, electric cyan brand accent, muted slate text). Root `color-scheme` set to `dark` so browser UI elements follow the palette.
+- Vynxlabs pages (home, about, contact, Launchpad Website, Operations Hub, AI Employee) redesigned to use the new section set: agency hero, process timeline for the 3S System, stats strips, testimonial grid, and pricing tables replacing the previous feature-grid pricing layout.
 
 ## [1.0.1] - 2026-03-19
 

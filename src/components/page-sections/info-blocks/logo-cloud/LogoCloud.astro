@@ -1,0 +1,138 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+
+type LogoItem = {
+  source?: string;
+  alt?: string;
+};
+
+const {
+  eyebrow = "",
+  heading = "",
+  logos = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "3xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["logo-cloud", className]}
+  maxContentWidth="3xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <SimpleText
+    alignX="center"
+    class="logo-cloud__eyebrow"
+    data-prop="eyebrow"
+    text={eyebrow}
+  />
+  {
+    heading && (
+      <Heading
+        level="h2"
+        size="md"
+        alignX="center"
+        class="logo-cloud__heading"
+        data-prop="heading"
+      >
+        {heading}
+      </Heading>
+    )
+  }
+
+  <ul
+    class="logo-cloud__list"
+    data-editable="array"
+    data-prop="logos"
+  >
+    {
+      logos.map((logo: LogoItem) => (
+        <li
+          class="logo-cloud__item"
+          data-id="page-sections/info-blocks/logo-cloud/logo-cloud-item"
+          data-editable="array-item"
+        >
+          <Image
+            source={logo.source}
+            alt={logo.alt}
+            class="logo-cloud__image"
+            data-prop-src="source"
+            data-prop-alt="alt"
+          />
+        </li>
+      ))
+    }
+  </ul>
+</CustomSection>
+
+<style>
+  @layer page-sections {
+    .logo-cloud {
+      :global(.logo-cloud__eyebrow) {
+        display: flex;
+        justify-content: center;
+        margin-top: 0;
+      }
+
+      :global(.logo-cloud__eyebrow .simple-text-content) {
+        color: var(--color-text-muted);
+        font-family: "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
+        font-size: var(--font-size-xs);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      :global(.logo-cloud__heading) {
+        color: var(--color-text-muted);
+        font-weight: 400;
+        margin-top: var(--spacing-sm);
+      }
+
+      .logo-cloud__list {
+        align-items: center;
+        display: grid;
+        gap: var(--spacing-2xl) var(--spacing-3xl);
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        justify-items: center;
+        list-style: none;
+        margin: var(--spacing-2xl) 0 0;
+        padding: 0;
+      }
+
+      .logo-cloud__item {
+        filter: brightness(0) invert(1);
+        opacity: 0.5;
+        transition: opacity 0.2s ease;
+      }
+
+      .logo-cloud__item:hover {
+        opacity: 0.9;
+      }
+
+      :global(.logo-cloud__image) {
+        margin-top: 0;
+      }
+
+      :global(.logo-cloud__image img),
+      :global(.logo-cloud__image picture) {
+        height: 36px;
+        max-width: 160px;
+        object-fit: contain;
+        width: auto;
+      }
+    }
+  }
+</style>

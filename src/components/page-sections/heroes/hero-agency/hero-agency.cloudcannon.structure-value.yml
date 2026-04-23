@@ -1,0 +1,53 @@
+label: Hero Agency
+icon: hero
+description: Modern agency hero — monospace eyebrow pill, large gradient headline, CTAs, and optional trusted-by logo row.
+value:
+  _component: page-sections/heroes/hero-agency
+  eyebrow: TAG LABEL
+  heading: A headline with *one gradient* word
+  subtext: Supporting subtext that explains what the page is about and why it matters.
+  buttonSections:
+    - _component: building-blocks/core-elements/button
+      text: Primary action
+      hideText: false
+      link: ""
+      iconName: ""
+      iconPosition: before
+      variant: primary
+      size: md
+  trustedByLabel: Trusted by
+  logos: []
+  colorScheme: dark
+  backgroundColor: base
+preview:
+  text:
+    - Hero Agency
+  subtext:
+    - key: heading
+  icon: hero
+picker_preview:
+  text: Hero Agency
+  subtext: Modern agency hero with gradient headline, CTAs, and trust row.
+_inputs_from_glob:
+  - /src/components/page-sections/heroes/hero-agency/hero-agency.cloudcannon.inputs.yml
+_structures:
+  heroAgencyLogos:
+    values:
+      - label: Logo
+        icon: image
+        value:
+          source: ""
+          alt: ""
+        preview:
+          text:
+            - key: alt
+            - Logo
+          image:
+            - key: source
+        _inputs:
+          source:
+            type: image
+            comment: Logo image (SVG recommended — will be tinted to white).
+          alt:
+            type: text
+            comment: Alt text / client name.

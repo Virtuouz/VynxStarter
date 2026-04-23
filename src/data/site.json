@@ -1,8 +1,8 @@
 {
-  "name": "Astro Component Starter",
-  "url": "https://example.com",
-  "description": "",
+  "name": "Vynxlabs",
+  "url": "https://vynxlabs.com",
+  "description": "Twin Falls, Idaho based web design and marketing. Websites. Automations. AI Employees. All done for you.",
   "logoSource": "/images/logo.svg",
-  "titleFormat": "{title} | Astro Component Starter",
-  "twitterHandle": "@yourusername"
+  "titleFormat": "{title} | Vynxlabs",
+  "twitterHandle": "@Vynxlabs"
 }

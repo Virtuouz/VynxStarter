@@ -1,0 +1,69 @@
+label: Process Timeline
+icon: list
+description: Vertical timeline with numbered phases (01 / 02 / 03…), each with heading, description, and framed image.
+value:
+  _component: page-sections/builders/process-timeline
+  eyebrow: PROCESS
+  heading: How we work
+  subtext: A short description of the phases in the process.
+  phases: []
+  colorScheme: inherit
+  backgroundColor: base
+preview:
+  text:
+    - Process Timeline
+  subtext:
+    - key: heading
+  icon: list
+picker_preview:
+  text: Process Timeline
+  subtext: Vertical numbered timeline with alternating content and media.
+_inputs_from_glob:
+  - /src/components/page-sections/builders/process-timeline/process-timeline.cloudcannon.inputs.yml
+_structures:
+  processTimelinePhases:
+    values:
+      - label: Phase
+        icon: list
+        value:
+          eyebrow: Phase label
+          title: Phase title
+          description: Phase description.
+          imageSource: ""
+          imageAlt: ""
+          buttonSections: []
+        preview:
+          text:
+            - key: title
+            - Phase
+          subtext:
+            - key: description
+          image:
+            - key: imageSource
+        _inputs:
+          eyebrow:
+            type: text
+            comment: Small label for the phase (e.g., "Phase 1 · Start").
+          title:
+            type: text
+            comment: Phase title / heading.
+          description:
+            type: markdown
+            comment: Phase description. Supports **bold** for emphasis.
+            options:
+              blockquote: false
+              bold: true
+              format:
+              italic: true
+              link: true
+          imageSource:
+            type: image
+            comment: Framed image or product render for this phase.
+          imageAlt:
+            type: text
+            comment: Alt text for the phase image.
+          buttonSections:
+            type: array
+            comment: Optional CTAs for the phase.
+            options:
+              structures: _structures.buttonSections

@@ -4,16 +4,15 @@ title: Blog
 pageLink: ''
 draft: false
 description: >-
-  Read our latest articles and insights on web development, design, and
-  technology.
+  Playbooks, rants, and field notes on websites, marketing automation, and AI
+  for Idaho service businesses.
 pageSections:
   - _component: page-sections/heroes/hero-center
-    eyebrow: ''
-    heading: All posts
+    eyebrow: The Vynxlabs blog
+    heading: Playbooks for growing a service business
     subtext: >-
-      This paginated blog index displays a grid of article cards, each waiting
-      to be populated with genuine posts once your content strategy moves beyond
-      placeholder text.
+      Field notes on websites, marketing automation, and AI — written for
+      Idaho service business owners. No fluff.
     buttonSections: []
     colorScheme: inherit
     backgroundColor: base

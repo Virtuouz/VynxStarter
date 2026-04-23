@@ -1,0 +1,29 @@
+stats:
+  type: array
+  comment: Big-number trust anchors (e.g., "7 DAYS", "$499", "24/7/365").
+  options:
+    structures: _structures.statsStripItems
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

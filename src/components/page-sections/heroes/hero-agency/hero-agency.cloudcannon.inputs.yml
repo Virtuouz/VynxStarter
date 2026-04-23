@@ -1,0 +1,60 @@
+eyebrow:
+  type: text
+  comment: Short tag label displayed above the hero heading (uppercase monospace pill).
+heading:
+  type: text
+  comment: Main headline. Wrap a word in *italics* to render it as a gradient accent.
+subtext:
+  type: markdown
+  comment: Supporting subtext displayed beneath the heading.
+  options:
+    blockquote: false
+    bold: true
+    format:
+    italic: true
+    link: true
+    strike: false
+    subscript: true
+    superscript: true
+    underline: false
+    bulletedlist: false
+    numberedlist: false
+buttonSections:
+  type: array
+  comment: Call-to-action buttons.
+  options:
+    structures: _structures.buttonSections
+trustedByLabel:
+  type: text
+  comment: Small label above the trusted-by logo row (e.g., "Trusted by Idaho businesses").
+logos:
+  type: array
+  comment: Client logos shown in a thin row beneath the hero.
+  options:
+    structures: _structures.heroAgencyLogos
+colorScheme:
+  type: select
+  comment: Color scheme theme for the hero.
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+backgroundColor:
+  type: select
+  comment: Background color for the hero.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

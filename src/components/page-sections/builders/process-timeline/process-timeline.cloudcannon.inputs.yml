@@ -1,0 +1,44 @@
+eyebrow:
+  type: text
+  comment: Short tag label displayed above the heading.
+heading:
+  type: text
+  comment: Section heading.
+subtext:
+  type: markdown
+  comment: Supporting description beneath the heading.
+  options:
+    blockquote: false
+    bold: true
+    format:
+    italic: true
+    link: true
+phases:
+  type: array
+  comment: Ordered phases in the process. Auto-numbered 01, 02, 03…
+  options:
+    structures: _structures.processTimelinePhases
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

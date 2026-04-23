@@ -13,14 +13,14 @@ export const siteFonts = [
     name: "Inter",
     cssVariable: "--font-body",
     provider: fontProviders.google(),
-    weights: [400, 600, 700],
+    weights: [400, 500, 600, 700],
     styles: ["normal"],
   },
   {
-    name: "Raleway",
+    name: "Oswald",
     cssVariable: "--font-headings",
     provider: fontProviders.google(),
-    weights: [400, 600, 700],
+    weights: [400, 500, 600, 700],
     styles: ["normal"],
   },
 ];

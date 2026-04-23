@@ -64,7 +64,7 @@ function buildColorGroupCSS(groupColors: Record<string, string>): string {
 
 // Primary color group → :root
 const primaryCSS = theme.colors?.primary
-  ? `:root { color-scheme: light; ${buildColorGroupCSS(theme.colors.primary)} }`
+  ? `:root { color-scheme: dark; ${buildColorGroupCSS(theme.colors.primary)} }`
   : "";
 
 // Additional color groups → [data-color-group="name"]

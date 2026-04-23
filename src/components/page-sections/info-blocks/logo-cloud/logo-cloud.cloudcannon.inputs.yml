@@ -1,0 +1,35 @@
+eyebrow:
+  type: text
+  comment: Small label above the logo row.
+heading:
+  type: text
+  comment: Optional heading shown above the logos.
+logos:
+  type: array
+  comment: Client / partner logos. SVGs recommended — will be tinted to white.
+  options:
+    structures: _structures.logoCloudItems
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

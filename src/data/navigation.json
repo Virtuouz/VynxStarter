@@ -1,26 +1,29 @@
 {
   "logo": {
     "source": "/images/logo.svg",
-    "alt": "Logo"
+    "alt": "Vynxlabs"
   },
   "primary": [
     { "label": "Home", "url": "/" },
-    { "label": "Why", "url": "/why/" },
+    { "label": "Websites", "url": "/services/launch-pad-website/" },
+    { "label": "Operations Hub", "url": "/services/operations-hub/" },
+    { "label": "AI Employees", "url": "/services/ai-employee/" },
+    { "label": "About", "url": "/about-us/" },
     { "label": "Blog", "url": "/blog/" }
   ],
   "cta": {
-    "label": "Search",
-    "url": "/search/",
-    "icon": "magnifying-glass"
+    "label": "Start a conversation",
+    "url": "/contact/",
+    "icon": ""
   },
   "footer": {
     "use_primary": true,
     "columns": [],
     "socials": [
-      { "icon": "social/github", "link": "https://github.com" },
-      { "icon": "social/x", "link": "https://twitter.com" },
-      { "icon": "social/linkedin", "link": "https://linkedin.com" }
+      { "icon": "social/x", "link": "https://x.com/Vynxlabs" },
+      { "icon": "social/facebook", "link": "https://www.facebook.com/profile.php?id=100093591519304" },
+      { "icon": "social/instagram", "link": "https://www.instagram.com/vynxlabs" }
     ],
-    "text": "© 2026 All rights reserved."
+    "text": "© 2026, by Vynxlabs LLC"
   }
 }

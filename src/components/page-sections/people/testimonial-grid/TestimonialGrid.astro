@@ -1,0 +1,229 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+
+type TestimonialItem = {
+  text?: string;
+  authorName?: string;
+  authorDescription?: string;
+  authorImage?: string;
+};
+
+const {
+  eyebrow = "",
+  heading = "",
+  testimonials = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "4xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["testimonial-grid", className]}
+  maxContentWidth="3xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <SimpleText
+    alignX="center"
+    class="testimonial-grid__eyebrow"
+    data-prop="eyebrow"
+    text={eyebrow}
+  />
+  <Heading
+    level="h2"
+    size="xl"
+    alignX="center"
+    class="testimonial-grid__heading"
+    data-prop="heading"
+  >
+    {heading}
+  </Heading>
+
+  <div
+    class="testimonial-grid__list"
+    data-editable="array"
+    data-prop="testimonials"
+  >
+    {
+      testimonials.map((item: TestimonialItem) => (
+        <figure
+          class="testimonial-grid__item"
+          data-id="page-sections/people/testimonial-grid/testimonial-card"
+          data-editable="array-item"
+        >
+          <blockquote
+            class="testimonial-grid__quote"
+            data-editable="text"
+            data-prop="text"
+          >
+            {item.text}
+          </blockquote>
+          <figcaption class="testimonial-grid__author">
+            <Image
+              source={item.authorImage}
+              alt={item.authorName}
+              class="testimonial-grid__author-image"
+              data-prop-src="authorImage"
+              data-prop-alt="authorName"
+            />
+            <div class="testimonial-grid__author-meta">
+              <span
+                class="testimonial-grid__author-name"
+                data-editable="text"
+                data-prop="authorName"
+              >
+                {item.authorName}
+              </span>
+              <span
+                class="testimonial-grid__author-description"
+                data-editable="text"
+                data-prop="authorDescription"
+              >
+                {item.authorDescription}
+              </span>
+            </div>
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+</CustomSection>
+
+<style>
+  @layer page-sections {
+    .testimonial-grid {
+      :global(.testimonial-grid__eyebrow) {
+        display: flex;
+        justify-content: center;
+        margin-top: 0;
+      }
+
+      :global(.testimonial-grid__eyebrow .simple-text-content) {
+        background: var(--color-bg-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-full);
+        color: var(--color-text-muted);
+        display: inline-block;
+        font-family: "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
+        font-size: var(--font-size-xs);
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        padding: 0.35em 0.9em;
+        text-transform: uppercase;
+      }
+
+      :global(.testimonial-grid__eyebrow .simple-text-content::before) {
+        color: var(--color-brand);
+        content: "// ";
+      }
+
+      :global(.testimonial-grid__heading) {
+        letter-spacing: -0.02em;
+        margin-top: var(--spacing-lg);
+      }
+
+      .testimonial-grid__list {
+        display: grid;
+        gap: var(--spacing-lg);
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        margin-top: var(--spacing-2xl);
+      }
+
+      .testimonial-grid__item {
+        background: var(--color-bg);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+        margin: 0;
+        padding: var(--spacing-xl);
+        position: relative;
+        transition: border-color 0.2s ease;
+      }
+
+      .testimonial-grid__item:hover {
+        border-color: var(--color-border-strong);
+      }
+
+      .testimonial-grid__item::before {
+        color: var(--color-brand);
+        content: "\201C";
+        font-family: var(--font-heading);
+        font-size: 4rem;
+        left: var(--spacing-lg);
+        line-height: 1;
+        opacity: 0.25;
+        position: absolute;
+        top: var(--spacing-xs);
+      }
+
+      .testimonial-grid__quote {
+        color: var(--color-text);
+        flex: 1;
+        font-size: var(--font-size-md);
+        line-height: 1.55;
+        margin: 0;
+        padding-top: var(--spacing-md);
+        position: relative;
+      }
+
+      .testimonial-grid__author {
+        align-items: center;
+        border-top: 1px solid var(--color-border);
+        display: flex;
+        gap: var(--spacing-md);
+        margin: 0;
+        padding-top: var(--spacing-md);
+      }
+
+      :global(.testimonial-grid__author-image) {
+        flex-shrink: 0;
+        margin-top: 0;
+      }
+
+      :global(.testimonial-grid__author-image .image-inner) {
+        border-radius: 50%;
+        height: 44px;
+        overflow: hidden;
+        width: 44px;
+      }
+
+      :global(.testimonial-grid__author-image img),
+      :global(.testimonial-grid__author-image picture) {
+        height: 100%;
+        object-fit: cover;
+        width: 100%;
+      }
+
+      .testimonial-grid__author-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .testimonial-grid__author-name {
+        color: var(--color-text-strong);
+        font-size: var(--font-size-sm);
+        font-weight: 600;
+      }
+
+      .testimonial-grid__author-description {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-xs);
+      }
+    }
+  }
+</style>

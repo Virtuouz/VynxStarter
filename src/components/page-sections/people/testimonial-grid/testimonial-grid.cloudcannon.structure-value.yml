@@ -1,0 +1,52 @@
+label: Testimonial Grid
+icon: format_quote
+description: Grid of testimonial cards (1–3 columns responsive) — quote, author photo, name, role.
+value:
+  _component: page-sections/people/testimonial-grid
+  eyebrow: TESTIMONIALS
+  heading: What clients say
+  testimonials: []
+  colorScheme: inherit
+  backgroundColor: base
+preview:
+  text:
+    - Testimonial Grid
+  subtext:
+    - key: heading
+  icon: format_quote
+picker_preview:
+  text: Testimonial Grid
+  subtext: Grid of testimonial cards with author photos.
+_inputs_from_glob:
+  - /src/components/page-sections/people/testimonial-grid/testimonial-grid.cloudcannon.inputs.yml
+_structures:
+  testimonialGridItems:
+    values:
+      - label: Testimonial
+        icon: format_quote
+        value:
+          text: Testimonial quote text.
+          authorName: Author Name
+          authorDescription: Role, Company
+          authorImage: ""
+        preview:
+          text:
+            - key: authorName
+            - Testimonial
+          subtext:
+            - key: text
+          image:
+            - key: authorImage
+        _inputs:
+          text:
+            type: text
+            comment: The testimonial quote.
+          authorName:
+            type: text
+            comment: Author's name.
+          authorDescription:
+            type: text
+            comment: Author's role / company.
+          authorImage:
+            type: image
+            comment: Author's photo (square recommended).

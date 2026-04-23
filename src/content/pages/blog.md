@@ -2,6 +2,7 @@
 _schema: default
 title: Blog
 pageLink: ''
+draft: false
 description: >-
   Read our latest articles and insights on web development, design, and
   technology.

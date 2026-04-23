@@ -2,6 +2,7 @@
 _schema: default
 title: Search
 pageLink: ''
+draft: false
 description: Search your site content with fast static search powered by Pagefind.
 pageSections:
   - _component: page-sections/heroes/hero-center

@@ -2,6 +2,7 @@
 _schema: default
 title: Why
 pageLink: ''
+draft: false
 description: Learn why this Astro component starter was built and how it helps teams create fast, flexible static sites.
 pageSections:
   - _component: page-sections/heroes/hero-split

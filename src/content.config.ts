@@ -7,6 +7,7 @@ const contentBlockSchema = z.object({ _component: z.string() }).passthrough();
 const pageSchema = z.object({
   title: z.string(),
   pageLink: z.string().optional(),
+  draft: z.boolean().optional(),
   description: z.string().optional(),
   keywords: z.array(z.string()).optional(),
   image: z.string().optional(),

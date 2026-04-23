@@ -26,6 +26,9 @@ collections_config:
       pageLink:
         type: text
         comment: Optional. Overrides the URL slug for this page. Leave empty to use a slugified version of the title.
+      draft:
+        type: switch
+        comment: When enabled, this page is excluded from the build and won't be published.
   blog:
     path: src/content/blog
     glob:

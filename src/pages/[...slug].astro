@@ -11,7 +11,7 @@ export async function getStaticPaths() {
   const pages = await getCollection("pages");
 
   return pages
-    .filter((page) => page.id !== "blog")
+    .filter((page) => page.id !== "blog" && !page.data.draft)
     .map((page) => {
       const segments = page.id.split("/");
       const last = segments[segments.length - 1];

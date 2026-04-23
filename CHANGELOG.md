@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 
 - `pageLink` frontmatter field on the pages schema for overriding a page's URL slug.
+- `draft` frontmatter field on the pages schema. Pages with `draft: true` are skipped at build time.
 
 ### Changed
 

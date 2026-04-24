@@ -1,0 +1,22 @@
+label: Callout
+icon: info
+description: Highlighted info, note, tip, warning, or danger message for editorial content.
+value:
+  _component: building-blocks/wrappers/callout
+  type: info
+  title: ''
+  contentSections: []
+  showIcon: true
+  iconName: ''
+preview:
+  text:
+    - Callout
+  subtext:
+    - key: title
+    - key: type
+  icon: info
+picker_preview:
+  text: Callout
+  subtext: Highlighted info, note, tip, warning, or danger message for editorial content.
+_inputs_from_glob:
+  - /src/components/building-blocks/wrappers/callout/callout.cloudcannon.inputs.yml

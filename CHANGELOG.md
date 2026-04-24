@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - `pageLink` frontmatter field on the pages schema for overriding a page's URL slug.
 - `draft` frontmatter field on the pages schema. Pages with `draft: true` are skipped at build time.
+- Callout wrapper for editorial content with `info`, `note`, `tip`, `warning`, and `danger` styles, optional title, and optional icon.
+- Task List wrapper with presentational checkboxes and support for nested subtasks.
+- File Tree wrapper for rendering directory hierarchies, supporting structured items or raw indented text with a native parser.
+- Mermaid Diagram core element with pan and zoom controls and color-group-aware theming sourced from CSS custom properties.
 
 ### Changed
 

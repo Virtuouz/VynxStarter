@@ -1,0 +1,19 @@
+mode:
+  comment: Authoring mode — structured items or raw indented text.
+  type: select
+  options:
+    values:
+      - id: structured
+        name: Structured
+      - id: raw
+        name: Raw indented text
+items:
+  comment: File tree nodes. Each node can be a file, folder, or folder with nested children.
+  type: array
+  options:
+    structures: _structures.fileTreeItems
+  hidden: "mode == 'raw'"
+source:
+  comment: 'Indented text representation of the tree. Use whitespace to indicate nesting. Trailing `/` marks a folder; names without children are files. Tree glyphs (├ └ ─ │) are stripped automatically.'
+  type: textarea
+  hidden: "mode != 'raw'"

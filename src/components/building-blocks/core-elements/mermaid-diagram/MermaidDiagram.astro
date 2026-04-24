@@ -1,0 +1,132 @@
+---
+const {
+  source = "",
+  caption = "",
+  class: className,
+  useDefaultEditableBinding = false,
+  "data-prop": customDataProp,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const effectiveDataProp = customDataProp ?? (useDefaultEditableBinding ? "source" : null);
+const sourceDataAttributes = effectiveDataProp
+  ? { "data-editable": "text", "data-prop": effectiveDataProp }
+  : {};
+
+const trimmedSource = typeof source === "string" ? source.trim() : "";
+const hasSource = trimmedSource.length > 0;
+
+if (!_component && !hasSource) return;
+---
+
+<figure
+  class:list={["mermaid-diagram", className]}
+  {...htmlAttributes}
+>
+  <pre
+    class="mermaid"
+    {...sourceDataAttributes}
+  >{trimmedSource}</pre>
+  {caption && <figcaption class="mermaid-caption">{caption}</figcaption>}
+</figure>
+
+<script>
+  import { onPageLoad } from "@components/utils/onPageLoad";
+  import { setupMermaid } from "./mermaid-setup";
+
+  onPageLoad(() => {
+    const diagrams = document.querySelectorAll(".mermaid-diagram");
+    if (!diagrams.length) return;
+    void setupMermaid(document);
+  });
+</script>
+
+<style>
+  @layer components {
+    .mermaid-diagram {
+      margin: var(--spacing-lg) 0 0 0;
+
+      > :global(pre.mermaid) {
+        background: var(--color-bg-surface);
+        border: 1px solid var(--color-border-subtle);
+        border-radius: var(--radius-sm);
+        margin: 0;
+        min-height: 400px;
+        overflow: hidden;
+        padding: 0;
+        position: relative;
+        touch-action: none;
+        width: 100%;
+
+        &:not(.pan-zoom-ready)::before {
+          color: var(--color-text-muted);
+          content: "Loading diagram…";
+          font-size: var(--font-size-sm);
+          inset: 0;
+          place-items: center;
+          position: absolute;
+        }
+
+        > :global(svg) {
+          display: block;
+          max-width: 100%;
+        }
+      }
+
+      > :global(pre.mermaid .mermaid-pan-zoom-controls) {
+        background: var(--color-bg);
+        border: 1px solid var(--color-border-subtle);
+        border-radius: var(--radius-xs);
+        bottom: var(--spacing-sm);
+        display: flex;
+        gap: 1px;
+        overflow: hidden;
+        position: absolute;
+        right: var(--spacing-sm);
+        z-index: var(--layer-2);
+
+        > :global(button) {
+          background: transparent;
+          border: none;
+          color: var(--color-text);
+          cursor: pointer;
+          font-size: var(--font-size-sm);
+          line-height: 1;
+          min-width: 2em;
+          padding: var(--spacing-2xs) var(--spacing-xs);
+
+          &:hover {
+            background: var(--color-state-hover);
+          }
+        }
+      }
+
+      > :global(pre.mermaid .mermaid-gesture-overlay) {
+        align-items: center;
+        background: var(--color-overlay, rgb(0 0 0 / 0.6));
+        color: var(--color-text-inverse, #fff);
+        display: flex;
+        font-size: var(--font-size-md);
+        inset: 0;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        transition: opacity var(--animation-fast) ease-in-out;
+        z-index: var(--layer-3);
+
+        &.active {
+          opacity: 1;
+        }
+      }
+
+      > .mermaid-caption {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-sm);
+        margin-top: var(--spacing-xs);
+        text-align: center;
+      }
+    }
+  }
+</style>

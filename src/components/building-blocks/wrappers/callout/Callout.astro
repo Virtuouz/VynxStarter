@@ -1,0 +1,163 @@
+---
+import RenderBlock from "@components/utils/renderBlock.astro";
+import Icon from "@core-elements/icon/Icon.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+
+type CalloutType = "info" | "note" | "tip" | "warning" | "danger";
+
+const DEFAULT_ICONS: Record<CalloutType, string> = {
+  info: "information-circle",
+  note: "light-bulb",
+  tip: "check-circle",
+  warning: "exclamation-triangle",
+  danger: "exclamation-circle",
+};
+
+const {
+  type = "info",
+  title,
+  iconName,
+  showIcon = true,
+  contentSections,
+  class: className,
+  useDefaultEditableBinding = false,
+  "data-prop": customDataProp,
+  "data-children-prop": childrenDataProp,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const resolvedType: CalloutType = (Object.prototype.hasOwnProperty.call(DEFAULT_ICONS, type)
+  ? type
+  : "info") as CalloutType;
+const resolvedIconName = iconName || DEFAULT_ICONS[resolvedType];
+
+const effectiveTitleProp = customDataProp ?? (useDefaultEditableBinding ? "title" : null);
+
+const effectiveChildrenProp =
+  childrenDataProp ?? (useDefaultEditableBinding ? "contentSections" : null);
+const arrayDataAttributes = effectiveChildrenProp
+  ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
+  : {};
+
+const hasTitle = title?.trim().length > 0;
+const hasContent = contentSections?.length > 0;
+const hasSlotContent = Astro.slots.has("default");
+
+if (!_component && !hasTitle && !hasContent && !hasSlotContent) return;
+---
+
+<aside
+  class:list={["callout", `callout-${resolvedType}`, className]}
+  role={resolvedType === "danger" || resolvedType === "warning" ? "alert" : "note"}
+  {...htmlAttributes}
+>
+  {
+    showIcon && resolvedIconName && (
+      <Icon
+        name={resolvedIconName}
+        size="md"
+        class="callout-icon"
+        aria-hidden="true"
+      />
+    )
+  }
+  <div class="callout-body">
+    {
+      hasTitle && (
+        <SimpleText
+          text={title}
+          class="callout-title"
+          data-prop={effectiveTitleProp}
+        />
+      )
+    }
+    <div
+      class="callout-content"
+      {...arrayDataAttributes}
+    >
+      <slot>
+        {
+          contentSections && (
+            <RenderBlock
+              contentSections={contentSections}
+              useDefaultEditableBinding={!!effectiveChildrenProp}
+            />
+          )
+        }
+      </slot>
+    </div>
+  </div>
+</aside>
+
+<style>
+  @layer components {
+    .callout {
+      --callout-accent: var(--color-border-strong);
+      --callout-accent-soft: var(--color-bg-surface);
+
+      align-items: flex-start;
+      background-color: var(--callout-accent-soft);
+      border-inline-start: var(--spacing-2xs) solid var(--callout-accent);
+      border-radius: var(--radius-sm);
+      column-gap: var(--spacing-sm);
+      container-type: inline-size;
+      display: flex;
+      margin-top: var(--spacing-lg);
+      padding: var(--spacing-md) var(--spacing-md);
+
+      > :global(.callout-icon) {
+        color: var(--callout-accent);
+        flex-shrink: 0;
+        margin-top: 0.1em;
+      }
+
+      > .callout-body {
+        flex: 1;
+        min-width: 0;
+
+        > :global(.callout-title) {
+          color: var(--callout-accent);
+          display: block;
+          font-weight: var(--font-weight-bold);
+          margin: 0 0 var(--spacing-2xs) 0;
+        }
+
+        > .callout-content {
+          > :global(*:first-child) {
+            margin-top: 0 !important;
+          }
+
+          > :global(*:last-child) {
+            margin-bottom: 0 !important;
+          }
+        }
+      }
+    }
+
+    .callout-info {
+      --callout-accent: var(--blue-dark);
+      --callout-accent-soft: var(--blue-light);
+    }
+
+    .callout-note {
+      --callout-accent: var(--purple-dark);
+      --callout-accent-soft: var(--purple-light);
+    }
+
+    .callout-tip {
+      --callout-accent: var(--green-dark);
+      --callout-accent-soft: var(--green-light);
+    }
+
+    .callout-warning {
+      --callout-accent: var(--orange-dark);
+      --callout-accent-soft: var(--orange-light);
+    }
+
+    .callout-danger {
+      --callout-accent: var(--red-dark);
+      --callout-accent-soft: var(--red-light);
+    }
+  }
+</style>

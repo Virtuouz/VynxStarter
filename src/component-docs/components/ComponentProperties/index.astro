@@ -103,7 +103,8 @@ function getEnumValues(inputConfig: any): string[] | undefined {
 function getNestedProperties(
   inputConfig: any,
   configData?: any,
-  parentKey?: string
+  parentKey?: string,
+  visited: Set<string> = new Set()
 ): PropertyMeta[] | undefined {
   if (inputConfig?.type === "object" && inputConfig._inputs) {
     const nestedProperties: PropertyMeta[] = [];
@@ -116,8 +117,8 @@ function getNestedProperties(
         default: formatDefaultValue(nestedInput.default, nestedInput),
         enumValues: getEnumValues(nestedInput),
         description: nestedInput?.comment || "",
-        nestedProperties: getNestedProperties(nestedInput, configData, key),
-        arrayItemProperties: getArrayItemProperties(nestedInput, configData),
+        nestedProperties: getNestedProperties(nestedInput, configData, key, visited),
+        arrayItemProperties: getArrayItemProperties(nestedInput, configData, visited),
       });
     });
 
@@ -146,9 +147,10 @@ function getNestedProperties(
             nestedProperties: getNestedProperties(
               nestedInput,
               configData,
-              `${parentKey}.${nestedKey}`
+              `${parentKey}.${nestedKey}`,
+              visited
             ),
-            arrayItemProperties: getArrayItemProperties(nestedInput, configData),
+            arrayItemProperties: getArrayItemProperties(nestedInput, configData, visited),
           });
         }
       }
@@ -160,7 +162,11 @@ function getNestedProperties(
   return undefined;
 }
 
-function getArrayItemProperties(inputConfig: any, configData: any): PropertyMeta[] | undefined {
+function getArrayItemProperties(
+  inputConfig: any,
+  configData: any,
+  visited: Set<string> = new Set()
+): PropertyMeta[] | undefined {
   // Check if this is an array with a structure reference
   if (inputConfig?.type === "array" && inputConfig.options?.structures) {
     const structures = inputConfig.options.structures;
@@ -168,6 +174,8 @@ function getArrayItemProperties(inputConfig: any, configData: any): PropertyMeta
     // Handle _structures.item format - when structures is a string reference
     if (typeof structures === "string" && structures.startsWith("_structures.")) {
       const structureName = structures.replace("_structures.", "");
+      if (visited.has(structureName)) return undefined;
+      const nextVisited = new Set(visited).add(structureName);
       const structure = configData._structures?.[structureName];
 
       if (structure?.values && structure.values.length > 0) {
@@ -189,8 +197,17 @@ function getArrayItemProperties(inputConfig: any, configData: any): PropertyMeta
               default: formatDefaultValue(value, itemInputConfig),
               enumValues: getEnumValues(itemInputConfig),
               description: itemInputConfig?.comment || "",
-              nestedProperties: getNestedProperties(itemInputConfig, configData),
-              arrayItemProperties: getArrayItemProperties(itemInputConfig, configData),
+              nestedProperties: getNestedProperties(
+                itemInputConfig,
+                configData,
+                undefined,
+                nextVisited
+              ),
+              arrayItemProperties: getArrayItemProperties(
+                itemInputConfig,
+                configData,
+                nextVisited
+              ),
             });
           });
 
@@ -218,8 +235,8 @@ function getArrayItemProperties(inputConfig: any, configData: any): PropertyMeta
             default: formatDefaultValue(value, itemInputConfig),
             enumValues: getEnumValues(itemInputConfig),
             description: itemInputConfig?.comment || "",
-            nestedProperties: getNestedProperties(itemInputConfig, configData),
-            arrayItemProperties: getArrayItemProperties(itemInputConfig, configData),
+            nestedProperties: getNestedProperties(itemInputConfig, configData, undefined, visited),
+            arrayItemProperties: getArrayItemProperties(itemInputConfig, configData, visited),
           });
         });
 

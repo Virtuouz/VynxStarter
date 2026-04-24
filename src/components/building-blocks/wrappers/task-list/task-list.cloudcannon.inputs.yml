@@ -1,0 +1,5 @@
+items:
+  comment: Tasks to display in the list.
+  type: array
+  options:
+    structures: _structures.taskListItems

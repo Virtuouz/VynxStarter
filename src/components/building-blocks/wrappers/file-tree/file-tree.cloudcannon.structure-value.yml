@@ -1,0 +1,52 @@
+label: File Tree
+icon: account_tree
+description: Hierarchical file and folder tree, authored as structured items or indented raw text.
+value:
+  _component: building-blocks/wrappers/file-tree
+  mode: structured
+  items: []
+  source: ''
+preview:
+  text:
+    - File Tree
+  subtext:
+    - key: mode
+  icon: account_tree
+picker_preview:
+  text: File Tree
+  subtext: Hierarchical file and folder tree, authored as structured items or indented raw text.
+_inputs_from_glob:
+  - /src/components/building-blocks/wrappers/file-tree/file-tree.cloudcannon.inputs.yml
+_structures:
+  fileTreeItems:
+    values:
+      - label: File or folder
+        icon: description
+        value:
+          name: file-or-folder
+          type: file
+          isOpen: true
+          children: []
+        _inputs:
+          name:
+            comment: Name of the file or folder.
+            type: text
+          type:
+            comment: Whether this node is a file or folder.
+            type: select
+            options:
+              values:
+                - id: file
+                  name: File
+                - id: folder
+                  name: Folder
+          isOpen:
+            comment: For folders, whether the folder renders expanded by default.
+            type: switch
+            hidden: "type != 'folder'"
+          children:
+            comment: Nested children (folders only).
+            type: array
+            hidden: "type != 'folder'"
+            options:
+              structures: _structures.fileTreeItems

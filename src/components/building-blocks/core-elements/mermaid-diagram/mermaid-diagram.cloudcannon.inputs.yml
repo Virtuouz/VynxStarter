@@ -1,0 +1,6 @@
+source:
+  comment: 'Mermaid diagram syntax. Supports flowcharts, sequence diagrams, state diagrams, class diagrams, ER diagrams, and more. See https://mermaid.js.org for reference.'
+  type: textarea
+caption:
+  comment: Optional caption shown below the diagram.
+  type: text

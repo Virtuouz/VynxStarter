@@ -1,0 +1,134 @@
+---
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import Self from "./TaskListItem.astro";
+
+type ChildItem = Record<string, unknown>;
+
+const {
+  text,
+  checked = false,
+  items = [] as ChildItem[],
+  useDefaultEditableBinding = false,
+  "data-prop": customDataProp,
+  "data-children-prop": childrenDataProp,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const effectiveTextProp = customDataProp ?? (useDefaultEditableBinding ? "text" : null);
+
+const effectiveChildrenProp =
+  childrenDataProp ?? (useDefaultEditableBinding ? "items" : null);
+const arrayDataAttributes = effectiveChildrenProp
+  ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
+  : {};
+
+const hasChildren = items?.length > 0;
+---
+
+<li
+  class:list={["task-list-item", checked && "is-checked"]}
+  {...htmlAttributes}
+>
+  <span
+    class="task-list-item-row"
+    aria-checked={checked ? "true" : "false"}
+    role="checkbox"
+  >
+    <span
+      class="task-list-checkbox"
+      aria-hidden="true"
+    />
+    <SimpleText
+      text={text}
+      class="task-list-item-text"
+      data-prop={effectiveTextProp}
+    />
+  </span>
+  {
+    hasChildren && (
+      <ul
+        class="task-list-items task-list-items-nested"
+        role="list"
+        {...arrayDataAttributes}
+      >
+        {items?.map((item: ChildItem) => (
+          <Self
+            useDefaultEditableBinding={!!effectiveChildrenProp}
+            data-editable="array-item"
+            data-id="building-blocks/wrappers/task-list/task-list-item"
+            {...item}
+          />
+        ))}
+      </ul>
+    )
+  }
+</li>
+
+<style>
+  @layer components {
+    .task-list-item {
+      display: block;
+      margin: 0;
+      padding: 0;
+
+      + .task-list-item {
+        margin-top: var(--spacing-2xs);
+      }
+
+      > .task-list-item-row {
+        align-items: flex-start;
+        column-gap: var(--spacing-sm);
+        display: flex;
+
+        > .task-list-checkbox {
+          background: var(--color-bg);
+          border: 1.5px solid var(--color-border);
+          border-radius: var(--radius-xs);
+          display: inline-block;
+          flex-shrink: 0;
+          height: 1em;
+          margin-top: 0.25em;
+          position: relative;
+          width: 1em;
+        }
+
+        > :global(.task-list-item-text) {
+          flex: 1;
+          margin: 0;
+          min-width: 0;
+        }
+      }
+
+      &.is-checked {
+        > .task-list-item-row > .task-list-checkbox {
+          background: var(--color-brand);
+          border-color: var(--color-brand);
+
+          &::after {
+            border: solid var(--color-text-on-brand);
+            border-width: 0 0.15em 0.15em 0;
+            content: "";
+            height: 0.55em;
+            left: 50%;
+            position: absolute;
+            top: 45%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 0.3em;
+          }
+        }
+
+        > .task-list-item-row > :global(.task-list-item-text) {
+          color: var(--color-text-muted);
+          text-decoration: line-through;
+        }
+      }
+
+      > .task-list-items-nested {
+        list-style: none;
+        margin: var(--spacing-2xs) 0 0 0;
+        padding-inline-start: calc(1em + var(--spacing-sm));
+      }
+    }
+  }
+</style>

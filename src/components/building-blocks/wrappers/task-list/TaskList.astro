@@ -1,0 +1,62 @@
+---
+import TaskListItem from "./TaskListItem.astro";
+
+type ItemProps = Record<string, unknown>;
+
+const {
+  items = [] as ItemProps[],
+  class: className,
+  useDefaultEditableBinding = false,
+  "data-children-prop": childrenDataProp,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const effectiveChildrenProp = childrenDataProp ?? (useDefaultEditableBinding ? "items" : null);
+const arrayDataAttributes = effectiveChildrenProp
+  ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
+  : {};
+
+const hasItems = items?.length > 0;
+const hasSlotContent = Astro.slots.has("default");
+
+if (!_component && !hasItems && !hasSlotContent) return;
+---
+
+<div
+  class:list={["task-list", className]}
+  {...htmlAttributes}
+>
+  <ul
+    class="task-list-items"
+    role="list"
+    {...arrayDataAttributes}
+  >
+    <slot>
+      {
+        items?.map((item: ItemProps) => (
+          <TaskListItem
+            useDefaultEditableBinding={!!effectiveChildrenProp}
+            data-editable="array-item"
+            data-id="building-blocks/wrappers/task-list/task-list-item"
+            {...item}
+          />
+        ))
+      }
+    </slot>
+  </ul>
+</div>
+
+<style>
+  @layer components {
+    .task-list {
+      margin-top: var(--spacing-lg);
+
+      > .task-list-items {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+</style>

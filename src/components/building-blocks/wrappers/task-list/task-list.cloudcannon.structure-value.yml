@@ -1,0 +1,36 @@
+label: Task List
+icon: checklist
+description: Checklist-style list of tasks with checked or unchecked state. Useful for guides and how-to content.
+value:
+  _component: building-blocks/wrappers/task-list
+  items: []
+preview:
+  text:
+    - Task List
+  icon: checklist
+picker_preview:
+  text: Task List
+  subtext: Checklist-style list of tasks with checked or unchecked state.
+_inputs_from_glob:
+  - /src/components/building-blocks/wrappers/task-list/task-list.cloudcannon.inputs.yml
+_structures:
+  taskListItems:
+    values:
+      - label: Task
+        icon: check_box_outline_blank
+        value:
+          text: To do
+          checked: false
+          items: []
+        _inputs:
+          text:
+            comment: Task description. Supports inline markdown.
+            type: text
+          checked:
+            comment: Whether the task is marked complete.
+            type: switch
+          items:
+            comment: Optional nested subtasks.
+            type: array
+            options:
+              structures: _structures.taskListItems

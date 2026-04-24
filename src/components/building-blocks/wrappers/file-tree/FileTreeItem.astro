@@ -1,0 +1,184 @@
+---
+import Icon from "@core-elements/icon/Icon.astro";
+import Self from "./FileTreeItem.astro";
+
+type ChildItem = Record<string, unknown>;
+
+const {
+  name = "",
+  type,
+  isOpen = true,
+  children = [] as ChildItem[],
+  useDefaultEditableBinding = false,
+  "data-prop": customDataProp,
+  "data-children-prop": childrenDataProp,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const hasChildren = children?.length > 0;
+const resolvedType: "file" | "folder" = type === "folder" || type === "file" ? type : hasChildren ? "folder" : "file";
+
+const effectiveNameProp = customDataProp ?? (useDefaultEditableBinding ? "name" : null);
+const nameDataAttributes = effectiveNameProp
+  ? { "data-editable": "text", "data-prop": effectiveNameProp }
+  : {};
+
+const effectiveChildrenProp =
+  childrenDataProp ?? (useDefaultEditableBinding ? "children" : null);
+const arrayDataAttributes = effectiveChildrenProp
+  ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
+  : {};
+
+const iconName =
+  resolvedType === "folder" ? (isOpen ? "folder-open" : "folder") : "document";
+---
+
+<li
+  class:list={["file-tree-item", `is-${resolvedType}`]}
+  role="treeitem"
+  aria-expanded={resolvedType === "folder" ? (isOpen ? "true" : "false") : undefined}
+  {...htmlAttributes}
+>
+  {
+    resolvedType === "folder" && hasChildren ? (
+      <details
+        class="file-tree-details"
+        open={isOpen}
+      >
+        <summary class="file-tree-row">
+          <Icon
+            name="chevron-right"
+            size="sm"
+            class="file-tree-chevron"
+            aria-hidden="true"
+          />
+          <Icon
+            name={iconName}
+            size="sm"
+            class="file-tree-icon"
+            aria-hidden="true"
+          />
+          <span
+            class="file-tree-name"
+            {...nameDataAttributes}
+          >
+            {name}
+          </span>
+        </summary>
+        <ul
+          class="file-tree-children"
+          role="group"
+          {...arrayDataAttributes}
+        >
+          {children?.map((child: ChildItem) => (
+            <Self
+              useDefaultEditableBinding={!!effectiveChildrenProp}
+              data-editable="array-item"
+              data-id="building-blocks/wrappers/file-tree/file-tree-item"
+              {...child}
+            />
+          ))}
+        </ul>
+      </details>
+    ) : (
+      <div class="file-tree-row file-tree-row-leaf">
+        <span
+          class="file-tree-chevron-placeholder"
+          aria-hidden="true"
+        />
+        <Icon
+          name={iconName}
+          size="sm"
+          class="file-tree-icon"
+          aria-hidden="true"
+        />
+        <span
+          class="file-tree-name"
+          {...nameDataAttributes}
+        >
+          {name}
+        </span>
+      </div>
+    )
+  }
+</li>
+
+<style>
+  @layer components {
+    .file-tree-item {
+      display: block;
+      margin: 0;
+      padding: 0;
+
+      > .file-tree-details {
+        > summary {
+          list-style: none;
+
+          &::-webkit-details-marker {
+            display: none;
+          }
+        }
+
+        &[open] > summary :global(.file-tree-chevron) {
+          transform: rotate(90deg);
+        }
+      }
+
+      .file-tree-row {
+        align-items: center;
+        column-gap: var(--spacing-2xs);
+        cursor: default;
+        display: flex;
+        line-height: 1.6;
+        padding: 0.1em 0;
+
+        :global(.file-tree-chevron) {
+          color: var(--color-text-muted);
+          transition: transform var(--animation-fast) ease-out;
+        }
+
+        :global(.file-tree-icon) {
+          color: var(--color-text-muted);
+        }
+
+        > .file-tree-chevron-placeholder {
+          display: inline-block;
+          width: var(--font-size-sm);
+        }
+
+        > .file-tree-name {
+          color: var(--color-text);
+          word-break: break-all;
+        }
+      }
+
+      .file-tree-details > summary.file-tree-row {
+        cursor: pointer;
+
+        &:hover {
+          background: var(--color-state-hover);
+          border-radius: var(--radius-xs);
+        }
+
+        > .file-tree-name {
+          color: var(--color-text-strong);
+          font-weight: var(--font-weight-semibold);
+        }
+      }
+
+      &.is-file > .file-tree-row > .file-tree-name {
+        color: var(--color-text);
+      }
+
+      .file-tree-children {
+        border-inline-start: 1px solid var(--color-border-subtle);
+        list-style: none;
+        margin: 0;
+        margin-inline-start: calc(var(--font-size-sm) * 0.5);
+        padding: 0;
+        padding-inline-start: var(--spacing-sm);
+      }
+    }
+  }
+</style>

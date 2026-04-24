@@ -1,0 +1,22 @@
+label: Mermaid Diagram
+icon: account_tree
+description: Mermaid flowchart, sequence, or class diagram rendered with pan and zoom controls. Themed from the active color group.
+value:
+  _component: building-blocks/core-elements/mermaid-diagram
+  source: |
+    graph TD
+      A[Start] --> B{Decision}
+      B -->|Yes| C[Continue]
+      B -->|No| D[Stop]
+  caption: ''
+preview:
+  text:
+    - Mermaid Diagram
+  subtext:
+    - key: caption
+  icon: account_tree
+picker_preview:
+  text: Mermaid Diagram
+  subtext: Mermaid flowchart, sequence, or class diagram with pan and zoom controls.
+_inputs_from_glob:
+  - /src/components/building-blocks/core-elements/mermaid-diagram/mermaid-diagram.cloudcannon.inputs.yml

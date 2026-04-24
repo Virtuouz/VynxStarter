@@ -1,0 +1,36 @@
+type:
+  comment: Callout style — controls color and default icon.
+  type: select
+  options:
+    values:
+      - id: info
+        name: Info
+      - id: note
+        name: Note
+      - id: tip
+        name: Tip
+      - id: warning
+        name: Warning
+      - id: danger
+        name: Danger
+title:
+  comment: Optional bold title shown above the body.
+  type: text
+contentSections:
+  comment: Body content of the callout.
+  type: array
+  options:
+    structures: _structures.calloutSections
+showIcon:
+  comment: Show an icon next to the callout body.
+  type: switch
+iconName:
+  comment: Override the default icon for this callout type.
+  type: select
+  options:
+    values: _select_data.icons
+    preview:
+      text:
+        - key: name
+      image:
+        - template: src/icons/{id}.svg

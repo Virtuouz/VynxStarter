@@ -1,4 +1,5 @@
 ---
+import { readTime } from "@component-utils/readTime";
 import BlogPost from "@layouts/BlogPost.astro";
 import { getCollection, render, type CollectionEntry } from "astro:content";
 
@@ -54,6 +55,7 @@ const { Content } = await render(post);
   image={post.data.image}
   date={post.data.date}
   author={post.data.author}
+  readTime={readTime(post.body)}
 >
   <Content components={mdxComponents} />
 </BlogPost>

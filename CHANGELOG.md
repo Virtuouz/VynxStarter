@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Task List wrapper with presentational checkboxes and support for nested subtasks.
 - File Tree wrapper for rendering directory hierarchies, supporting structured items or raw indented text with a native parser.
 - Mermaid Diagram core element with pan and zoom controls and color-group-aware theming sourced from CSS custom properties.
+- Estimated read time on blog posts and blog listing cards, calculated from the post body at 250 words per minute.
 
 ### Changed
 

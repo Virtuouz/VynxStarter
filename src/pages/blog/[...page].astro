@@ -1,4 +1,5 @@
 ---
+import { readTime } from "@component-utils/readTime";
 import Heading from "@core-elements/heading/Heading.astro";
 import Image from "@core-elements/image/Image.astro";
 import Pagination from "@core-elements/pagination/Pagination.astro";
@@ -103,7 +104,7 @@ const pageDescription =
                       size="sm"
                       style="color: var(--color-text-muted); margin-bottom: var(--spacing-xs);"
                     >
-                      {pubDate} • {post.data.author || "Anonymous"}
+                      {pubDate} • {post.data.author || "Anonymous"} • {readTime(post.body)} read
                     </SimpleText>
                     <Heading
                       level="h3"
